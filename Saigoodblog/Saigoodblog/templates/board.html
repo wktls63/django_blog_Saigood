@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>board</title>
+</head>
+<body>
+    {% comment %} Header 부분 {% endcomment %}
+    <header>
+        <div class="container">
+            <div class="top_left">
+                <img src="img/" alt="blogicon">
+            </div>
+            <div class="top_right">
+                <div class="nav_filter_buttons">
+                    <button class="filter_button">일상</button>
+                    <button class="filter_button">요리</button>
+                    <button class="filter_button">여행</button>
+                    <button class="filter_button">영화</button>
+                    <button class="filter_button">IT</button>
+                </div>
+                <div class="nav_item_buttons">
+                    <a href="{% url 'board_client' %}" class="logout">Logout</a>
+                    <a href="{% url 'write' %}" class="write">Just Write!</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% comment %} Main 부분 {% endcomment %}
+    <main>
+        
+    </main>
+
+    {% comment %} Footer 부분 {% endcomment %}
+    <footer>
+        <div class="bottom">
+            <p>made with <h5>Saigood</h5></p>
+        </div>
+    </footer>
+</body>
+</html>
