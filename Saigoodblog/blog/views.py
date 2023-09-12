@@ -3,9 +3,10 @@ from rest_framework import viewsets
 from .models import Article, Topic
 from .serializers import ArticleSerializer, TopicSerializer
 
-# 로그인
-from django.contrib.auth.forms import AuthenticationForm
+# 회원가입, 로그인, 로그아웃
 from django.contrib.auth import authenticate, login
+from .forms import UserForm
+
 
 # Create your views here.
 class ArticleViewSet(viewsets.ModelViewSet):
@@ -16,28 +17,25 @@ class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
 
-''' 로그인 구현
-def login_view(request):
-    # POST 요청이면 폼 데이터를 처리한다.
-    if request.method == 'POST':
-
-        # 폼 인스턴스를 생성하고 요청으로 받은 데이터를 채운다 (binding??)
-        form = AuthenticationForm(request, data=request.POST)
+def signup(request):
+    if request.method == "POST":
+        form = UserForm(request.POST)
         
-        # 폼이 유효한지 체크한다.
+        # 화면에서 입력한 데이터로 사용자 생성
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['pw']
-            user = authenticate(request, username=username, password=password)
-
-            # 로그인 성공하면 board_admin 화면으로 간다.
-            if user is not None:
-                login(request, user)
-                return redirect('board_admin')
-    
-    # POST 요청이 아닌 경우 로그인 화면 보여준다.
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('board')
+        
     else:
-        form = AuthenticationForm()
+        form = UserForm()
+    return render(request, 'signup.html', {'form':form})
 
-    return render(request, 'login.html', {'form': form})
-'''
+def board(request):
+    return render(request, 'board.html')
+
+def write(request):
+    return render(request, 'write.html')
