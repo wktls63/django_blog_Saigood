@@ -27,10 +27,10 @@ secrets = json.load(open(os.path.join(SECRETS_DIR, 'secret.json')))
 SECRET_KEY = secrets['DJANGO_SECRET_KEY']
 
 # TEMPLATE_DIR
-TEMPLATE_DIR = [BASE_DIR / 'templates']
+TEMPLATE_DIR = [BASE_DIR / 'Saigoodblog' / 'templates']
 
 # STATIC
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [BASE_DIR / 'Saigoodblog' / "static"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -92,9 +92,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'blog',
-        'USER': 'admin',
-        'PASSWORD': '3526',
-        'HOST': '118.41.225.177',
+        'USER': 'postgres',
+        'PASSWORD': 'dkwkdkwk1!',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -139,3 +139,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# 로그인 성공후 이동하는 URL
+LOGIN_REDIRECT_URL = '/board'
+LOGOUT_REDIRECT_URL = '/board'
