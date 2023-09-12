@@ -26,6 +26,12 @@ SECRETS_DIR = BASE_DIR / '.secrets'
 secrets = json.load(open(os.path.join(SECRETS_DIR, 'secret.json')))
 SECRET_KEY = secrets['DJANGO_SECRET_KEY']
 
+# TEMPLATE_DIR
+TEMPLATE_DIR = [BASE_DIR / 'templates']
+
+# STATIC
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -42,8 +48,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Custom App
+    # Custom APP
     'blog',
+    'psycopg2',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +69,7 @@ ROOT_URLCONF = 'Saigoodblog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': TEMPLATE_DIR,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,11 +94,10 @@ DATABASES = {
         'NAME': 'blog',
         'USER': 'admin',
         'PASSWORD': '3526',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': '118.41.225.177',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
