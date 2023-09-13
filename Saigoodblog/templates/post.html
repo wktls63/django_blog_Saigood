@@ -1,11 +1,107 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
 </head>
 <body>
-    <p>로그인 성공</p>
+    {% comment %} Header 부분 {% endcomment %}
+    <header class="nav">
+        <div class="container">
+            <div class="top_left">
+                <img src="{% static 'img/blogicon_black.svg' %}" alt="blogicon">
+            </div>
+            <div class="top_right">
+                <div class="nav_filter_buttons">
+                    <button class="filter_button">일상</button>
+                    <button class="filter_button">요리</button>
+                    <button class="filter_button">여행</button>
+                    <button class="filter_button">영화</button>
+                    <button class="filter_button">IT</button>
+                </div>
+                <div class="nav_item_buttons">
+                    <a href="{% url 'board' %}" class="logout">Logout</a>
+                    <a href="{% url 'write' %}" class="write">Just Write!</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% comment %} Main 부분 {% endcomment %}
+    <main>
+        {% comment %} Main > Article 부분 {% endcomment %}
+        <!-- css 작업 위해 임시로 넣어놨습니다! -->
+        <article>
+            <div class="article_info">
+                <p class="posted_date">2023 09 06</p>
+                <h2 class="title">Lorem ipsum dolor</h2>
+                <p class="author">by userid</p>
+                <p class="topic">일상</p>
+            </div>
+            <div class="article_detail">
+                <p class="content">Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames
+                vitae nunc gravida morbi felis porttitor integer. Ridiculus id purus feugiat et mi justo scelerisque euismod euismod.</p>
+                <img class="image" src="{% static 'img/post_sample.png' %}"></image>
+            </div>
+        </article>
+        
+        <!-- 아래로 대체되어야 합니다.
+        <article>
+            <p class="posted_date">{{ article.posted_date }}</p>
+            <h2 class="title">{{ article.title }}</h2>
+            <p class="author">{{ article.author }}</p>
+            <p class="topic">{{ article.topic }}</p>
+            <div class="article_detail">
+                <p class="content">{{ article.content }}</p>
+                <image class="image">{{ article.imageurl }}</image>
+            </div>
+        </article>
+        -->
+
+        {% comment %} Main > Aside 부분 {% endcomment %}
+        <aside>
+            <p>Other posts you may like</p>
+            {% for post in recommend_posts %}
+                <div>
+                    <image> {{ post.image.url }}</image>
+                    <h3> {{ post.title }}</h3>
+                </div>
+            {% endfor %}
+        </aside>
+    </main>
+
+    {% comment %} 수정하기, 삭제하기, 다음글, 이전글 부분 {% endcomment %}
+    <div id="article_tools">
+        <div>
+            <a id="edit_btn" href="">수정하기</a>
+            <a id="delete_btn" href="">삭제하기</a>
+            <a id="share_btn" href="">공유하기</a>
+        </div>
+        <div>
+            <div id="next_post">
+                <p>다음글</p>
+                <p>{{ next_post.title }}</p>
+                <p>{{ next_post.posted_date }}</p>
+            </div>
+            <div id="prev_post">
+                <p>이전글</p>
+                <p>{{ prev_post.title }}</p>
+                <p>{{ prev_post.posted_date }}</p>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Footer 부분 {% endcomment %}
+    <footer>
+        <div class="bottom">
+            <p>made with
+            <h5>Saigood</h5>
+            </p>
+        </div>
+    </footer>
+
 </body>
 </html>
