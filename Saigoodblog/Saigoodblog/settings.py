@@ -27,10 +27,10 @@ secrets = json.load(open(os.path.join(SECRETS_DIR, 'secret.json')))
 SECRET_KEY = secrets['DJANGO_SECRET_KEY']
 
 # TEMPLATE_DIR
-TEMPLATE_DIR = [BASE_DIR / 'Saigoodblog' / 'templates']
+TEMPLATE_DIR = [BASE_DIR / 'templates']
 
 # STATIC
-STATICFILES_DIRS = [BASE_DIR / 'Saigoodblog' / "static"]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -92,9 +92,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'blog',
-        'USER': 'postgres',
-        'PASSWORD': 'dkwkdkwk1!',
-        'HOST': 'localhost',
+        'USER': 'admin',
+        'PASSWORD': '3526',
+        'HOST': '118.41.225.177',
         'PORT': '5432',
     }
 }
