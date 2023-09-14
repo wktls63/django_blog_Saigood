@@ -34,19 +34,30 @@
     <main>
         <div class="write_field">
             <input type="text" class="title" placeholder="제목">
-            <textarea cols="30" rows="10" placeholder="텍스트에디터로 변경 필요 \ CKeditor, tinymce, summernote 등"></textarea>
+            <textarea class="content" cols="30" rows="10" placeholder="텍스트에디터로 변경 필요 \ CKeditor, tinymce, summernote 등"></textarea>
         </div>
         <aside class="write_option">
             <div class="auto_ai">
+                <img src="{% static 'img/robot-outline.svg' %}">
                 <button>AI 글 자동완성</button>
             </div>
             <div class="topic">
                 <p>TOPIC</p>
-                <input type="radio" name="topic" value="0">일상
-                <input type="radio" name="topic" value="1">요리
-                <input type="radio" name="topic" value="2">여행
-                <input type="radio" name="topic" value="3">영화
-                <input type="radio" name="topic" value="4">IT / 전자기기
+                <div>
+                    <input type="radio" name="topic" value="0" id="topic1"><label for="topic1">일상</label>
+                </div>
+                <div>
+                    <input type="radio" name="topic" value="1" id="topic2"><label for="topic1">요리</label>
+                </div>
+                <div>
+                    <input type="radio" name="topic" value="2" id="topic3"><label for="topic1">여행</label>
+                </div>
+                <div>
+                    <input type="radio" name="topic" value="3" id="topic4"><label for="topic1">영화</label>
+                </div>
+                <div>
+                    <input type="radio" name="topic" value="4" id="topic5"><label for="topic1">IT / 전자기기</label>
+                </div>
             </div>
             <div class="upload_info">
                 <p>UPLOAD INFO</p>
@@ -63,7 +74,9 @@
     {% comment %} Footer 부분 {% endcomment %}
     <footer>
         <div class="bottom">
-            <p>made with <h5>Saigood</h5></p>
+            <p>made with
+                <strong>Saigood</strong>
+            </p>
         </div>
     </footer>
 </body>
