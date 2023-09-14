@@ -4,19 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body>
-    <h1>로그인</h1>
-    <form method="post" class="login_form" action="{% url 'login' %}">
-        {% csrf_token %}
-        <div class="input_field">
-            <input class= "login-name" type="text" name="username" placeholder="username">
-            <input class= "login-password" type="password" name="password" placeholder="password">
-        </div>
-        <button type="submit" class="login_button">Login</button>
-        <p>아직 회원이 아니라면? <a href="{% url 'sign_up' %}">회원가입</a></p>
-    </form>
+    <h2 class="login-title">Login</h2>
+    
+    <div class="login-box">
+        <form class="login-box" action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="form-item">{{form.email}}</div>
+            <div class="form-item-error" id="errors_email">{{ form.email.errors }}</div>
+            <div class="form-item">{{form.password}}</div>
+            <div class="form-item-error" id="errors_phone">{{ form.password.errors }}</div>
+            <button class="button-submit" type="submit">로그인</button>
+        </form>
+        <a href="{% url 'sign_up' %}">회원가입</a>
+    </div>
 </body>
 </html>

@@ -2,8 +2,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ArticleViewSet, TopicViewSet
 from .views import board, write
-from django.contrib.auth import views as auth_views
-from .views import SignUpView, posting, logout_view
+
+from .views import SignUpView, posting, logout_view, LoginView
 
 router = DefaultRouter()
 router.register(r"articles", ArticleViewSet)
@@ -14,7 +14,7 @@ urlpatterns = [
     
     path("post/", posting, name="posting"),
     path("signup/", SignUpView.as_view(), name="sign_up"),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path("login/", LoginView.as_view(), name="login"),
     path("logout/", logout_view, name="logout"),
 
     path('board/', board, name='board'),
