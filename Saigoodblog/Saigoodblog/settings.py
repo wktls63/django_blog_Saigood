@@ -32,6 +32,14 @@ TEMPLATE_DIR = [BASE_DIR / 'templates']
 # STATIC
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
+# MEDIA
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# CKEDITOR
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -47,6 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor', 
+    'ckeditor_uploader',
 
     # Custom APP
     'blog',

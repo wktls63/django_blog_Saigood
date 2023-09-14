@@ -85,12 +85,12 @@ class Article(models.Model):
     image                       = models.ImageField(verbose_name = '이미지 파일', null = True, upload_to = "images/", blank = True)
     posted_date                 = models.DateTimeField(verbose_name = "게시일", auto_now_add=True)
     updated_date                = models.DateTimeField(verbose_name = "수정일", auto_now_add=True)
-    deleted_date                = models.DateTimeField(verbose_name = "삭제일")
     views                       = models.PositiveIntegerField(default = 0)
 
     # 외래키
     # CASCADE : 외래키가 바라보는 값이 삭제될때 외래키를 포함하는 모델 인스턴스(row)도 삭제된다.
-    topic_id = models.ForeignKey(Topic, on_delete=models.CASCADE, verbose_name = "토픽ID")
+    user                        = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name = "유저", default='')
+
 
     
     def __str__(self):
