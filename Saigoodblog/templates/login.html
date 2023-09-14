@@ -11,7 +11,7 @@
     <h2 class="login-title">Login</h2>
     
     <div class="login-box">
-        <form class="login-box" action="{% url 'login' %}" method="post">
+        <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
             <div class="form-item">{{form.email}}</div>
             <div class="form-item-error" id="errors_email">{{ form.email.errors }}</div>
