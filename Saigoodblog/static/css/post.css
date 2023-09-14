@@ -1,0 +1,321 @@
+* {
+    font-family: 'Pretendard', sans-serif;
+}
+
+h2, h3, p {
+    margin: initial;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0px;
+    width: 100%;
+    background-color: #F9F8F4;
+}
+
+/* -----------------------Header--------------------- */
+/* admin페이지의 header 부분에 클래스 nav 추가해야 함 */
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 104px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: #F9F8F4;
+    width: 100%;
+    z-index: 999;
+    color: #1e1e1e;
+    text-decoration: none;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.container {
+    width: 1024px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.top_right {
+    display: flex;
+    flex-direction: row;
+    gap: 34px;
+}
+
+.nav_filter_buttons {
+    display: flex;
+    align-items: center;
+    gap: 56px;
+
+    color: #1E1E1E;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.filter_button {
+    display: flex;
+    gap: 40px;
+}
+
+button {
+    cursor: pointer;
+    all: unset;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+/* 로그인, 로그아웃, write 버튼 */
+.nav_item_buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 28px;
+    /* 너비와 높이가 같으므로 50%로 설정하면 동그라미 모양이 됩니다 */
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 0px 10px 25px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.logout {
+    color: #1E1E1E;
+    padding: 10px 15px;
+}
+
+.logout:hover {
+    color: rgb(255, 162, 162);
+    transition: transform 0.8s, color 0.3s;
+}
+
+.write {
+    background-color: #1e1e1e;
+    color: #F9F8F4;
+    padding: 10px 15px;
+    border-radius: 2px;
+}
+
+.write:hover {
+    background-color: #696969;
+    transition: transform 0.8s, background-color 0.3s;
+    color: #ffffff;
+}
+
+/*----------- main -----------*/
+main {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    width: 1024px;
+    height: fit-content;
+    margin-top: calc(34px + 104px);
+    margin-left: calc(50% - 512px);
+}
+
+
+/*----------- article 부분 -----------*/
+article {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 684px;
+    padding: 36px 32px;
+    border: 1px solid #CAC8C5;
+}
+
+.article_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+.posted_date {
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: -4px;
+    opacity: 0.5;
+}
+
+.title {
+    color: #000;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.author {
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.5;
+}
+
+.topic {
+    color: #1E1E1E;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 25px;
+
+    background-color: #E1E0DB;
+    border-radius: 2px;
+    border: none;
+
+    padding: 0px 9px;
+}
+
+.article_detail {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.content {
+    width: 100%;
+    color: #000;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.image {
+    width: 100%;
+    object-fit: cover;
+}
+
+/* ----------- aside 부분 ----------- */
+aside {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    width: 318px;
+    padding: 16px 8px 76px 16px;
+    border: 1px solid #CAC8C5;
+}
+
+aside > p {
+    color: #A6A5A1;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+aside > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px 8px 16px 8px;
+
+    border: 1px solid #CAC8C5;
+}
+
+/* article_tools */
+#article_tools {
+    margin-top: 23px;
+    margin-left: calc(50% - 512px);
+    margin-bottom: 84px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+    width: 1024px;
+}
+
+#article_tools>div:first-child{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 7px;
+
+    text-align: center;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 25px;
+}
+
+#article_tools>div a {
+    padding: 0px 9px;
+    border-radius: 2px;
+}
+
+#edit_btn {
+    color: #1E1E1E;
+    background-color: #E1E0DB;
+}
+
+#delete_btn {
+    color: #F9F8F4;
+    background-color: #1E1E1E;
+}
+
+#share_btn {
+    color: #1E1E1E;
+    border: 1px solid #D9D9D9;
+    margin-left: auto;
+}
+
+#article_tools > div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 1024px;
+}
+
+#next_post, #prev_post {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 27px;
+
+    color: #000;
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 0.5;
+}
+
+#next_post>p:nth-child(2), #prev_post>p:nth-child(2) {
+    opacity: 1;
+}
+
+#next_post>p:last-child, #prev_post>p:last-child {
+    margin-left: auto;
+}
+
+
+
+/* -----------------------Footer--------------------- */
+/* Footer 스타일 */
+footer {
+    width: 100%;
+    height: 200px;
+    background: #E7E3DA;
+    position: relative;
+    bottom: 0px;
+}
+
+/* Footer의 텍스트 */
+.bottom {
+    font-size: 12px;
+    font-weight: 400;
+    color: #2b2b2b;
+    /* 텍스트 색상 */
+    position: absolute;
+    right: calc(50% - 512px);
+    bottom: 35px;
+}
