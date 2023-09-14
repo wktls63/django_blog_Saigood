@@ -83,8 +83,8 @@ class Article(models.Model):
     title                       = models.CharField(verbose_name = "게시글 제목", max_length = 100)
     content                     = models.TextField(verbose_name = "게시글 내용")
     image                       = models.ImageField(verbose_name = '이미지 파일', null = True, upload_to = "images/", blank = True)
-    posted_date                 = models.DateTimeField(verbose_name = "게시일")
-    updated_date                = models.DateTimeField(verbose_name = "수정일")
+    posted_date                 = models.DateTimeField(verbose_name = "게시일", auto_now_add=True)
+    updated_date                = models.DateTimeField(verbose_name = "수정일", auto_now_add=True)
     deleted_date                = models.DateTimeField(verbose_name = "삭제일")
     views                       = models.PositiveIntegerField(default = 0)
 
@@ -99,6 +99,4 @@ class Article(models.Model):
     class Meta:
         verbose_name            = '아티클'
         verbose_name_plural     = '아티클 목록'
-
-
 
