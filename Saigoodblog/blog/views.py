@@ -83,7 +83,7 @@ class SignUpView(FormView):
 class LoginView(FormView):
     template_name = "login.html"
     form_class = LoginForm
-    success_url = "/blog/post/"
+    success_url = "/blog/board/"
     
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
