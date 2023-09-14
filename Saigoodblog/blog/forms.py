@@ -1,9 +1,19 @@
 import re
 from django import forms
-from .models import User
+from .models import User, Article
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 
+class BlogPostForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        exclude = ['posted_date']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['topic'].required = False
+        self.fields['publish'].required = False
+        self.fields['views'].required = False
 
 class SignUpForm(forms.Form):
     email = forms.EmailField(label="이메일", widget=forms.EmailInput(attrs={"placeholder": "이메일"}))
