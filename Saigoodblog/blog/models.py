@@ -91,6 +91,7 @@ class Article(models.Model):
     # 외래키
     # CASCADE : 외래키가 바라보는 값이 삭제될때 외래키를 포함하는 모델 인스턴스(row)도 삭제된다.
     topic_id = models.ForeignKey(Topic, on_delete=models.CASCADE, verbose_name = "토픽ID")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name = "유저", default='')
 
     
     def __str__(self):
@@ -100,3 +101,22 @@ class Article(models.Model):
         verbose_name            = '아티클'
         verbose_name_plural     = '아티클 목록'
 
+# model tag 부분 작성해본 부분입니다
+
+# class Tag(models.Model):
+#     name = models.CharField(max_length=50, verbose_name='태그 이름')
+#     # 다른 필드 추가 가능
+
+#     def __str__(self):
+#         return self.name
+
+#     class Meta:
+#         verbose_name = '태그'
+#         verbose_name_plural = '태그 목록'
+
+# class Article(models.Model):
+#     # 기존 필드 유지
+
+#     tags = models.ManyToManyField(Tag, verbose_name='태그 목록')
+
+#     # 나머지 필드 및 메서드 유지
