@@ -1,4 +1,53 @@
 from django.db import models
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+
+
+class UserManager(BaseUserManager):
+    def create_user(self, email, password=None):
+        if not email:
+            raise ValueError("Users must have an email address")
+        if not password:
+            raise ValueError("Users must have a password")
+        email = self.normalize_email(email)
+        user = self.model(
+            email=email,
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None):
+        user = self.create_user(email=email, password=password)
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+
+
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(verbose_name="생성일", auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name="갱신일", auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class User(BaseModel, AbstractBaseUser):
+    email = models.EmailField(verbose_name="이메일", max_length=100, unique=True)
+    password = models.CharField(verbose_name="비밀번호", max_length=255)
+    is_active = models.BooleanField(verbose_name="활성 여부", default=True)
+    is_admin = models.BooleanField(verbose_name="관리자 여부", default=False)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["password"]
+
+    objects = UserManager()
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name = "사용자"
+        verbose_name_plural = "사용자 목록"
 
 class Topic(models.Model):
 

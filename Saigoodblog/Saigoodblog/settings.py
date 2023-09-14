@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'Saigoodblog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blog',
+        'NAME': 'blog2',
         'USER': 'admin',
         'PASSWORD': '3526',
         'HOST': '118.41.225.177',

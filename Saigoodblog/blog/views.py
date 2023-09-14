@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from .models import Article, Topic
 from .serializers import ArticleSerializer, TopicSerializer
-from .forms import SignUpForm
-from django.contrib.auth.models import User
+from .forms import SignUpForm, LoginForm
+from .models import User
 from django.contrib.auth import login, logout, authenticate
 from django.views.generic import FormView
 from django.utils.decorators import method_decorator
@@ -76,4 +76,25 @@ class SignUpView(FormView):
 
     def form_invalid(self, form):
         print("SignUpView - form_invalid")
+        return super().form_invalid(form)
+    
+
+@method_decorator(my_decorator, name="get")
+class LoginView(FormView):
+    template_name = "login.html"
+    form_class = LoginForm
+    success_url = "/blog/post/"
+    
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+    
+    def form_valid(self, form):
+        email = form.data.get("email")
+        password = form.data.get("password")
+        user = authenticate(self.request, email=email, password=password)
+        if user is not None:
+            login(self.request, user)
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
         return super().form_invalid(form)
