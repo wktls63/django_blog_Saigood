@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>write</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/write.css' %}">
+</head>
+<body>
+    {% comment %} Header 부분 {% endcomment %}
+    <header class="nav">
+        <div class="container">
+            <div class="top_left">
+                <img src="{% static 'img/blogicon_black.svg' %}" alt="blogicon">
+            </div>
+            <div class="top_right">
+                <div class="nav_filter_buttons">
+                    <button class="filter_button">일상</button>
+                    <button class="filter_button">요리</button>
+                    <button class="filter_button">여행</button>
+                    <button class="filter_button">영화</button>
+                    <button class="filter_button">IT</button>
+                </div>
+                <div class="nav_item_buttons">
+                    <a href="{% url 'board' %}" class="logout">Logout</a>
+                    <a href="{% url 'write' %}" class="write">Just Write!</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% comment %} Main 부분 {% endcomment %}
+    <main>
+        <div class="write_field">
+            <input type="text" class="title" placeholder="제목">
+            <textarea cols="30" rows="10" placeholder="텍스트에디터로 변경 필요 \ CKeditor, tinymce, summernote 등"></textarea>
+        </div>
+        <aside class="write_option">
+            <div class="auto_ai">
+                <button>AI 글 자동완성</button>
+            </div>
+            <div class="topic">
+                <p>TOPIC</p>
+                <input type="radio" name="topic" value="0">일상
+                <input type="radio" name="topic" value="1">요리
+                <input type="radio" name="topic" value="2">여행
+                <input type="radio" name="topic" value="3">영화
+                <input type="radio" name="topic" value="4">IT / 전자기기
+            </div>
+            <div class="upload_info">
+                <p>UPLOAD INFO</p>
+                <p id="upload_state">상태 : 미게시</p>
+                <a href="">이미지 업로드</a>
+                <div>
+                    <a href="">임시저장</a>
+                    <a href="">글 작성</a>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    {% comment %} Footer 부분 {% endcomment %}
+    <footer>
+        <div class="bottom">
+            <p>made with <h5>Saigood</h5></p>
+        </div>
+    </footer>
+</body>
+</html>
