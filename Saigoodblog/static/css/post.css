@@ -203,7 +203,7 @@ aside {
     flex-direction: column;
     gap: 26px;
     width: 318px;
-    padding: 16px 8px 76px 16px;
+    padding: 16px 8px 76px 8px;
     border: 1px solid #CAC8C5;
 }
 
