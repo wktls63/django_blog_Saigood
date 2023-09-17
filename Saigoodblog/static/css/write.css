@@ -1,0 +1,284 @@
+* {
+    font-family: 'Pretendard', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0px;
+    width: 100%;
+}
+
+/* -----------------------Header--------------------- */
+/* admin페이지의 header 부분에 클래스 nav 추가해야 함 */
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 104px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: #F9F8F4;
+    width: 100%;
+    z-index: 999;
+    color: #1e1e1e;
+    text-decoration: none;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.container {
+    width: 1024px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.top_right {
+    display: flex;
+    flex-direction: row;
+    gap: 34px;
+}
+
+.nav_filter_buttons {
+    display: flex;
+    align-items: center;
+    gap: 56px;
+
+    color: #1E1E1E;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.filter_button {
+    display: flex;
+    gap: 40px;
+}
+
+button {
+    cursor: pointer;
+    all: unset;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+/* 로그인, 로그아웃, write 버튼 */
+.nav_item_buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 28px;
+    /* 너비와 높이가 같으므로 50%로 설정하면 동그라미 모양이 됩니다 */
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 0px 10px 25px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.logout {
+    color: #1E1E1E;
+    padding: 10px 15px;
+}
+
+.logout:hover {
+    color: rgb(255, 162, 162);
+    transition: transform 0.8s, color 0.3s;
+}
+
+.write {
+    background-color: #1e1e1e;
+    color: #F9F8F4;
+    padding: 10px 15px;
+    border-radius: 2px;
+}
+
+.write:hover {
+    background-color: #696969;
+    transition: transform 0.8s, background-color 0.3s;
+    color: #ffffff;
+}
+
+/* 글 작성 부분 */
+main {
+    background-color: #F9F8F4;
+    width: 100%;
+    height: calc(824px - 104px);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    position: absolute;
+    top: 104px;
+}
+
+.write_field {
+    width: 740px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.title {
+    padding: 11px 16px;
+    color: #222222;
+    background: #FFF;
+    border: none;
+}
+
+.title::placeholder {
+    color: #BFBFBF;
+}
+
+.content {
+    width: 100%;
+    background-color: #FFF;
+    height: 300px;
+    padding: 0px;
+    border: none;
+}
+
+/* 글 옵션 부분 (자동완성, 주제선택, 이미지 업로드 등) */
+.write_option {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 264px;
+}
+
+.auto_ai, .topic, .upload_info {
+    padding: 16px;
+    border: 1px solid #CAC8C5;
+    border-radius: 2px;
+}
+
+.auto_ai {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.auto_ai:hover {
+    cursor: pointer;
+}
+
+.topic {
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+    gap: 6px;
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.topic > p {
+    margin: initial;
+    margin-bottom: 4px;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.topic > div {
+    display: flex;
+    align-items: center;
+}
+
+.upload_info {
+    display: flex;
+    flex-direction: column;
+    color: #000;
+}
+
+.upload_info > p:nth-child(1) {
+    margin: initial;
+    margin-bottom: 10px;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.upload_info > p:nth-child(2) {
+    margin: initial;
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.upload_info > a {
+    margin: initial;
+    margin-bottom: 44px;
+    
+    color: black;
+    font-size: 14px;
+    font-weight: 400;
+    border-bottom: 1px solid black;
+    width: fit-content;
+}
+
+.upload_info > div {
+    display: flex;
+    flex-direction: row;
+    gap: 13px;
+}
+
+.upload_info > div > a {
+    padding: 4px 17px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 24px;
+    border-radius: 2px;
+    border: 1px solid #1E1E1E;
+    width:-webkit-fill-available;
+}
+
+.upload_info > div > a:first-child{
+    background: none;
+    color: #1E1E1E;
+}
+
+.upload_info > div > a:last-child{
+    background: #1E1E1E;
+    color: white;
+}
+
+
+/* -----------------------Footer--------------------- */
+/* Footer 스타일 */
+footer {
+    width: 100%;
+    height: 200px;
+    background: #E7E3DA;
+    position: absolute;
+    bottom: 0px;
+}
+
+/* Footer의 텍스트 */
+.bottom {
+    font-size: 12px;
+    font-weight: 400;
+    color: #2b2b2b;
+    /* 텍스트 색상 */
+
+    position: absolute;
+    right: calc(50% - 512px);
+    bottom: 35px;
+}

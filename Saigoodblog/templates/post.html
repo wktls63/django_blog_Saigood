@@ -45,6 +45,10 @@
                 <p class="content">Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames
                 vitae nunc gravida morbi felis porttitor integer. Ridiculus id purus feugiat et mi justo scelerisque euismod euismod.</p>
                 <img class="image" src="{% static 'img/post_sample.png' %}"></image>
+                <p class="content">Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque.
+                    Euismod consectetur fames
+                    vitae nunc gravida morbi felis porttitor integer. Ridiculus id purus feugiat et mi justo scelerisque euismod
+                    euismod.</p>
             </div>
         </article>
         
@@ -63,6 +67,18 @@
 
         {% comment %} Main > Aside 부분 {% endcomment %}
         <aside>
+            <p>Other posts<br>you may like</p>
+            {% for i in "x"|rjust:"2" %}
+            <div>
+                <img src="{% static 'img/aside_sample.png' %}">
+                <h3> Lorem ipsum dolor </h3>
+            </div>
+            {% endfor %}
+        </aside>
+        
+        
+        <!-- 아래로 대체되어야 합니다.
+            <aside>
             <p>Other posts you may like</p>
             {% for post in recommend_posts %}
                 <div>
@@ -70,7 +86,7 @@
                     <h3> {{ post.title }}</h3>
                 </div>
             {% endfor %}
-        </aside>
+        </aside> -->
     </main>
 
     {% comment %} 수정하기, 삭제하기, 다음글, 이전글 부분 {% endcomment %}
@@ -83,13 +99,17 @@
         <div>
             <div id="next_post">
                 <p>다음글</p>
-                <p>{{ next_post.title }}</p>
-                <p>{{ next_post.posted_date }}</p>
+                <p>글의 제목입니다.</p>
+                <p>2023 09 07</p>
+                <!-- <p>{{ next_post.title }}</p>
+                <p>{{ next_post.posted_date }}</p> -->
             </div>
             <div id="prev_post">
                 <p>이전글</p>
-                <p>{{ prev_post.title }}</p>
-                <p>{{ prev_post.posted_date }}</p>
+                <p>글의 제목입니다.</p>
+                <p>2023 09 05</p>
+                <!-- <p>{{ prev_post.title }}</p>
+                <p>{{ prev_post.posted_date }}</p> -->
             </div>
         </div>
     </div>
@@ -98,10 +118,10 @@
     <footer>
         <div class="bottom">
             <p>made with
-            <h5>Saigood</h5>
+                <strong>Saigood</strong>
             </p>
         </div>
     </footer>
-
 </body>
+<script src="{% static 'js/share.js' %}"></script>
 </html>
