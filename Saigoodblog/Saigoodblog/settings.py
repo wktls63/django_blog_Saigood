@@ -37,8 +37,23 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # CKEDITOR
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ],
+        'height': 300,
+        'width': 1000,
+    },
+}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

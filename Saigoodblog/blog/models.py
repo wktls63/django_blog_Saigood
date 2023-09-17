@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class UserManager(BaseUserManager):
@@ -81,7 +82,7 @@ class Topic(models.Model):
 class Article(models.Model):
     article_id                  = models.AutoField(primary_key = True, verbose_name = "게시글ID")
     title                       = models.CharField(verbose_name = "게시글 제목", max_length = 100)
-    content                     = models.TextField(verbose_name = "게시글 내용")
+    content                     = RichTextUploadingField(verbose_name = "게시글 내용", blank = True)
     image                       = models.ImageField(verbose_name = '이미지 파일', null = True, upload_to = "images/", blank = True)
     posted_date                 = models.DateTimeField(verbose_name = "게시일", auto_now_add=True)
     updated_date                = models.DateTimeField(verbose_name = "수정일", auto_now_add=True)
@@ -99,4 +100,15 @@ class Article(models.Model):
     class Meta:
         verbose_name            = '아티클'
         verbose_name_plural     = '아티클 목록'
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, verbose_name='태그 이름')
+    # 다른 필드 추가 가능
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '태그'
+        verbose_name_plural = '태그 목록'
 

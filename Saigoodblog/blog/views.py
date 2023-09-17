@@ -1,20 +1,74 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework import viewsets
 from .models import Article, Topic
 from .serializers import ArticleSerializer, TopicSerializer
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, BlogPostForm
 from .models import User
 from django.contrib.auth import login, logout, authenticate
 from django.views.generic import FormView
 from django.utils.decorators import method_decorator
 
+# 글 생성
+def modelForm(request):
+    if request.method == 'POST':
+        form = BlogPostForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('board')
+    else:
+        form = BlogPostForm()
+    return render(request, 'write.html', {'form':form})
+
+# 글 목록 띄우기
+def article_list(request):
+    # 블로그 글들을 모조리 띄우는 코드
+    # posts = Article.objects.all()
+    # 최신글 정렬
+    posts = Article.objects.filter().order_by('-posted_date')
+    return render(request, 'post.html', {'posts': posts})
+
+
+# 포스트 업로드, 업데이트, 삭제
+# def create_or_update_post(request, post_id=None):
+#     # 글 수정
+#     if post_id:
+#         post = get_object_or_404(Article, id=post_id)
+
+#     # 글 작성
+#     else:
+#         post = Article.objects.filter(article_id=request.user.username, publish='N').order_by('-posted_date').first()
+
+#     if request.method == 'POST':
+#         form = BlogPostForm(request.POST, instance=post) # 폼 초기화
+
+#         # 삭제
+#         if 'delete-btn' in request.POST:
+#             post.delete()
+#             return redirect('post')
+
+#         if not form.cleaned_data.get('topic'):
+#             post.topic = '전체'
+
+#         # 임시저장
+#         if '' in request.POST:
+#             post.publish = 'N'
+#         else:
+#             post.publish = 'Y'
+
+#         # 작성자
+#         post.article_id = request.user.username
+
+#         post.save()
+#         return redirect('post', post_id=post.id)
+
+#     else:
+#         form = BlogPostForm(instance=post)
+
 
 # 회원가입, 로그인, 로그아웃
 
 
-
-
-# Create your views here.
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
