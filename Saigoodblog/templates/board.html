@@ -41,30 +41,35 @@
         {% comment %} 조회수 가장 많은 포스트 {% endcomment %}
         <!-- css 작업 위한 용도(나중에 삭제) -->
         <div class="top_post">
-            <h2>Lorem ipsum dolor</h2>
-            <p>Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames
-            vitae nunc gravida morbi felis porttitor integer. Ridiculus id purus feugiat et mi justo scelerisque euismod euismod.
-            Turpis dictumst luctus nisi placerat purus dolor luctus vitae pretium. Gravida faucibus scelerisque quis mi consequat
-            malesuada.</p>
-            <a href="{% url 'posting' %}">READ MORE</a>
+            <div>
+                <h2>Lorem ipsum dolor</h2>
+                <p>Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames
+                vitae nunc gravida morbi felis porttitor integer. Ridiculus id purus feugiat et mi justo scelerisque euismod euismod.
+                Turpis dictumst luctus nisi placerat purus dolor luctus vitae pretium. Gravida faucibus scelerisque quis mi consequat
+                malesuada.</p>
+                <a href="{% url 'posting' %}">READ MORE</a>
+            </div>
+            <img src="{% static 'img/top_post.png' %}">
         </div>
-        <img src="{% static 'img/top_post.png' %}">
-
         <!-- view에서 데이터를 정상적으로 불러오면, 아래로 대체되어야 합니다.
-            <div class="top_post">
-            <h2>{{ top_post.title }}</h2>
-            <p>{{ top_post.content }}</p>
-            <a href="{% url 'posting' %}">READ MORE</a>
-        </div>
-        <img src="{{ post.image.url }}" alt="postimg"> -->
-
-
+        
+        <div class="top_post">
+            <div>
+                <h2>{{ top_post.title }}</h2>
+                <p>{{ top_post.content }}</p>
+                <a href="{% url 'posting' %}">READ MORE</a>
+            </div>
+            <img src="{{ post.image.url }}" alt="postimg">
+        </div> 
+        
+        -->
+        
         {% comment %} 전체 포스트 {% endcomment %}
         <div class="post">
             <!-- css 작업을 위한 용도(나중에 삭제) -->
-            {% for i in "x"|rjust:"9" %}
+            {% for i in "x"|rjust:"6" %}
                 <div class="all_post">
-                    <img class="post_img" src="{% static 'img/article_sample_image' %}" alt="postimg">
+                    <img class="post_img" src="{% static 'img/article_sample_image.png' %}" alt="postimg">
                     <div class="all_post_body">
                         <h6 class="post_date">2023-09-07 12:13:01</h6>
                         <h4 class="post_title">Lorem ipsum dolor</h4>
@@ -92,7 +97,7 @@
     <footer>
         <div class="bottom">
             <p>made with
-            <h5>Saigood</h5>
+            <strong>Saigood</strong>
             </p>
         </div>
     </footer>
