@@ -93,7 +93,7 @@ class Article(models.Model):
     user                        = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name = "유저", default='')
 
 
-    
+
     def __str__(self):
         return f"{self.title}"
 
