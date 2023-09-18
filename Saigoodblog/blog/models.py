@@ -107,4 +107,3 @@ class Tag(models.Model):
     class Meta:
         verbose_name = '태그'
         verbose_name_plural = '태그 목록'
-

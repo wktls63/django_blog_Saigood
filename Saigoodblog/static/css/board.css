@@ -86,29 +86,55 @@ button:hover {
 }
 
 .nav_item_buttons {
-    display: inline-block;
-    background-color: #f9f8f4;
-    border-radius: 2px;
+    display: flex;
+    flex-direction: row;
+    gap: 28px;
     /* 너비와 높이가 같으므로 50%로 설정하면 동그라미 모양이 됩니다 */
-    text-decoration: none;
     text-align: center;
     font-weight: bold;
-    padding: 10px 25px 10px 25px;
+    padding: 10px 0px 10px 25px;
 }
 
-.nav_item_buttons:hover {
+/* .nav_item_buttons:hover {
     background-color: #696969;
     transition: transform 0.8s, background-color 0.3s;
     color: #ffffff;
-}
+} */
 
 .login {
-    color: black;
+    background-color: #F9F8F4;
+    color: #1E1E1E;
+    padding: 10px 15px;
+    border-radius: 2px;
+}
+
+.login:hover {
+    background-color: #696969;
+    transition: transform 0.8s, color 0.3s;
+    color: #ffffff;
+}
+
+.logout {
+    color: #F9F8F4;
+    padding: 10px 15px;
 }
 
 .logout:hover {
     color: rgb(255, 162, 162);
     transition: transform 0.8s, color 0.3s;
+}
+
+.write {
+    background-color: #F9F8F4;
+    color: #1E1E1E;
+    padding: 10px 15px;
+    border-radius: 2px;
+}
+
+.write:hover {
+    background-color: #696969;
+    transition: transform 0.8s, background-color 0.3s;
+    color: #ffffff;
 }
 
 /* ------------------------Main---------------------- */

@@ -23,13 +23,24 @@ def modelForm(request):
         form = BlogPostForm()
     return render(request, 'write.html', {'form':form})
 
+
+
 # 글 목록 띄우기
-def article_list(request):
-    # 블로그 글들을 모조리 띄우는 코드
-    # posts = Article.objects.all()
-    # 최신글 정렬
-    posts = Article.objects.filter().order_by('-posted_date')
-    return render(request, 'post.html', {'posts': posts})
+def article_list(request, topic=None):
+    
+    # 선택된 주제 있을 경우 필터링
+    if topic:
+        posts = Article.objects.filter(topic=topic, publish='Y').order_by('-views')
+
+    # 선택된 주제 없을 경우 모든 글목록 보여줌
+    else:
+        posts = Article.objects.filter(publish='Y').order_by('-views')
+
+    # 조회수가 가장 
+    top_post = posts.first()
+
+    return render(request, 'board.html', {'posts':posts, 'top_post':top_post})
+
 
 
 # 포스트 업로드, 업데이트, 삭제
@@ -69,7 +80,6 @@ def article_list(request):
 #         form = BlogPostForm(instance=post)
 
 
-# 회원가입, 로그인, 로그아웃
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
@@ -100,7 +110,7 @@ def posting(request):
 # 로그아웃 (화면없이 기능 동작 후, 리다이렉트)
 def logout_view(request):
     logout(request)
-    return redirect("sign_up")
+    return redirect("board")
 
 
 @method_decorator(my_decorator, name="get")

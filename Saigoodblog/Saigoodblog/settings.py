@@ -94,6 +94,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Saigoodblog.urls'
 
+# User
+AUTH_USER_MODEL = 'blog.User'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
