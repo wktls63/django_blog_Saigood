@@ -42,6 +42,9 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
 CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 
+# USER
+AUTH_USER_MODEL = 'blog.User'
+
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': [
@@ -116,7 +119,7 @@ WSGI_APPLICATION = 'Saigoodblog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blog2',
+        'NAME': 'blog3',
         'USER': 'admin',
         'PASSWORD': '3526',
         'HOST': '222.103.0.162',

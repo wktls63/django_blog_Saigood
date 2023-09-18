@@ -19,7 +19,7 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password=None):
         user = self.create_user(email=email, password=password)
-        user.is_admin = True
+        user.is_staff = True
         user.save(using=self._db)
         return user
 
@@ -36,7 +36,7 @@ class User(BaseModel, AbstractBaseUser):
     email = models.EmailField(verbose_name="이메일", max_length=100, unique=True)
     password = models.CharField(verbose_name="비밀번호", max_length=255)
     is_active = models.BooleanField(verbose_name="활성 여부", default=True)
-    is_admin = models.BooleanField(verbose_name="관리자 여부", default=False)
+    is_staff = models.BooleanField(verbose_name="관리자 여부", default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["password"]
@@ -45,6 +45,12 @@ class User(BaseModel, AbstractBaseUser):
 
     def __str__(self):
         return self.email
+    
+    def has_perm(self, perm, obj=None):
+        return self.is_staff
+
+    def has_module_perms(self, app_label):
+        return self.is_staff
 
     class Meta:
         verbose_name = "사용자"
