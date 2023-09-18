@@ -11,8 +11,7 @@ router.register(r"articles", ArticleViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     
-    path("post/", posting, name="posting"),
-
+    path("post/<int:article_id>", views.post_detail, name="post"),
     path("signup/", SignUpView.as_view(), name="sign_up"),
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", logout_view, name="logout"),
