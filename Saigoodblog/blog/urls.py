@@ -1,13 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ArticleViewSet, TopicViewSet
+from .views import ArticleViewSet
 from .views import board, write
 
 from .views import SignUpView, posting, logout_view, LoginView
 
 router = DefaultRouter()
 router.register(r"articles", ArticleViewSet)
-router.register(r"topics", TopicViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

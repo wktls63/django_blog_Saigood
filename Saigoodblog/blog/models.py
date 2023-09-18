@@ -50,7 +50,13 @@ class User(BaseModel, AbstractBaseUser):
         verbose_name = "사용자"
         verbose_name_plural = "사용자 목록"
 
-class Topic(models.Model):
+
+class Article(models.Model):
+    article_id                  = models.AutoField(primary_key = True, verbose_name = "게시글ID")
+    title                       = models.CharField(verbose_name = "게시글 제목", max_length = 100)
+    content                     = RichTextUploadingField(verbose_name = "게시글 내용", blank = True)
+    image                       = models.ImageField(verbose_name = '이미지 파일', null = True, upload_to = "images/", blank = True)
+    publish                     = models.CharField(max_length=1, default='Y')
 
     DAILY                       = 0
     COOKING                     = 1
@@ -67,23 +73,7 @@ class Topic(models.Model):
                                   ]
 
 
-    topic_id                    = models.AutoField(primary_key = True, verbose_name = "토픽ID" )
-    topic_name                  = models.IntegerField(choices=TOPIC_CHOICES, default=DAILY, verbose_name='토픽이름')
-
-    
-    def __str__(self):
-        return f"{self.topic_name}"
-
-    class Meta:
-        verbose_name            = '토픽'
-        verbose_name_plural     = '토픽 목록'
-
-
-class Article(models.Model):
-    article_id                  = models.AutoField(primary_key = True, verbose_name = "게시글ID")
-    title                       = models.CharField(verbose_name = "게시글 제목", max_length = 100)
-    content                     = RichTextUploadingField(verbose_name = "게시글 내용", blank = True)
-    image                       = models.ImageField(verbose_name = '이미지 파일', null = True, upload_to = "images/", blank = True)
+    topic                       = models.IntegerField(choices=TOPIC_CHOICES, default=DAILY, verbose_name='토픽이름')
     posted_date                 = models.DateTimeField(verbose_name = "게시일", auto_now_add=True)
     updated_date                = models.DateTimeField(verbose_name = "수정일", auto_now_add=True)
     views                       = models.PositiveIntegerField(default = 0)
@@ -102,11 +92,11 @@ class Article(models.Model):
         verbose_name_plural     = '아티클 목록'
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, verbose_name='태그 이름')
+    tag_name = models.CharField(max_length=50, verbose_name='태그 이름')
     # 다른 필드 추가 가능
 
     def __str__(self):
-        return self.name
+        return self.tag_name
 
     class Meta:
         verbose_name = '태그'
