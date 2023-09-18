@@ -100,7 +100,7 @@ def posting(request):
 # 로그아웃 (화면없이 기능 동작 후, 리다이렉트)
 def logout_view(request):
     logout(request)
-    return redirect("sign_up")
+    return redirect("board")
 
 
 @method_decorator(my_decorator, name="get")

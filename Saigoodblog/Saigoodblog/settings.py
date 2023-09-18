@@ -91,6 +91,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Saigoodblog.urls'
 
+# settings.py
+AUTH_USER_MODEL = 'blog.User'  # 'your_app'은 실제 앱 이름으로 변경해야 합니다.
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -119,7 +122,7 @@ DATABASES = {
         'NAME': 'blog2',
         'USER': 'admin',
         'PASSWORD': '3526',
-        'HOST': '118.41.225.177',
+        'HOST': '222.103.0.162',
         'PORT': '5432',
     }
 }
