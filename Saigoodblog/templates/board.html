@@ -18,11 +18,11 @@
             </div>
             <div class="top_right">
                 <div class="nav_filter_buttons">
-                    <a href="{% url 'board_by_topic' topic='1' %}"><button>일상</button></a>
-                    <a href="{% url 'board_by_topic' topic='2' %}"><button>요리</button></a>
-                    <a href="{% url 'board_by_topic' topic='3' %}"><button>여행</button></a>
-                    <a href="{% url 'board_by_topic' topic='4' %}"><button>영화</button></a>
-                    <a href="{% url 'board_by_topic' topic='5' %}"><button>IT</button></a>
+                    <a href="{% url 'board_by_topic' topic='0' %}"><button>일상</button></a>
+                    <a href="{% url 'board_by_topic' topic='1' %}"><button>요리</button></a>
+                    <a href="{% url 'board_by_topic' topic='2' %}"><button>여행</button></a>
+                    <a href="{% url 'board_by_topic' topic='3' %}"><button>영화</button></a>
+                    <a href="{% url 'board_by_topic' topic='4' %}"><button>IT</button></a>
                 </div>
                 <div class="nav_item_buttons">
                     {% if user.is_authenticated %}
