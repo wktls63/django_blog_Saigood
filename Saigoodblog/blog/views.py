@@ -8,6 +8,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.views.generic import FormView
 from django.utils.decorators import method_decorator
 
+from bs4 import BeautifulSoup
+from django.conf import settings
+
 # 글 생성
 def modelForm(request):
     if request.method == 'POST':
@@ -20,13 +23,37 @@ def modelForm(request):
         form = BlogPostForm()
     return render(request, 'write.html', {'form':form})
 
-# 글 목록 띄우기
-def article_list(request):
-    # 블로그 글들을 모조리 띄우는 코드
-    # posts = Article.objects.all()
-    # 최신글 정렬
-    posts = Article.objects.filter().order_by('-posted_date')
-    return render(request, 'post.html', {'posts': posts})
+def post_detail(request, article_id):
+    # article_id로 게시글 가져오기
+    # post = Article.objects.get(article_id=article_id)
+    post = get_object_or_404(Article, article_id=article_id)
+
+    # 조회수 증가 및 db에 저장
+    post.views += 1 
+    post.save()
+
+    # 이전/다음 게시물 가져옴
+    prev_post = Article.objects.filter(article_id__lt=post.article_id, publish='Y').order_by('-article_id').first()
+    next_post = Article.objects.filter(article_id__gt=post.article_id, publish='Y').order_by('article_id').first()
+
+    # 같은 주제인 게시물들 중 최신 글 가져옴
+    recommended_posts = Article.objects.filter(topic=post.topic, publish='Y').exclude(article_id=post.article_id).order_by('-updated_date')[:2]
+
+    # 게시물 내용에서 첫번째 이미지(썸네일) 태그 추출
+    for recommended_post in recommended_posts:
+        soup = BeautifulSoup(recommended_post.content, 'html.parser')
+        image_tag = soup.find('img')
+        recommended_post.image_tag = str(image_tag) if image_tag else ''
+    
+    context = {
+        'post': post,
+        'prev_post': prev_post,
+        'next_post': next_post,
+        'recommended_posts': recommended_posts,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+
+    return render(request, 'post.html', context)
 
 
 # 포스트 업로드, 업데이트, 삭제
