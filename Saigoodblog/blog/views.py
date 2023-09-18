@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework import viewsets
-from .models import Article, Topic
-from .serializers import ArticleSerializer, TopicSerializer
+from rest_framework.views    import APIView
+from .models import Article
+from .serializers import ArticleSerializer
+from rest_framework.response import Response
+from rest_framework          import status
 from .forms import SignUpForm, LoginForm, BlogPostForm
 from .models import User
 from django.contrib.auth import login, logout, authenticate
@@ -73,9 +76,6 @@ class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
 
-class TopicViewSet(viewsets.ModelViewSet):
-    queryset = Topic.objects.all()
-    serializer_class = TopicSerializer
 
 
 def board(request):
