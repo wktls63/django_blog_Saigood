@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ArticleViewSet
-from .views import board, write, article_list, post_detail
+from .views import board, write, article_list, post_detail, create_or_update_post
 
 from .views import SignUpView, posting, logout_view, LoginView
 
@@ -16,7 +16,10 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", logout_view, name="logout"),
 
+
     path('board/', article_list, name='board'),
+    path('write/', create_or_update_post, name='create_or_update_post'),
+    path('edit_post/<int:post_id>/', create_or_update_post, name='create_or_update_post'),
     path('board/<str:topic>', article_list, name='board_by_topic'),
 
     path('write/', write, name='write'),

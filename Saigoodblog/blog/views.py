@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from bs4 import BeautifulSoup
 from django.conf import settings
 
+
 from bs4 import BeautifulSoup
 from django.conf import settings
 
@@ -97,37 +98,37 @@ def post_detail(request, article_id):
 
 
 
-def post_detail(request, article_id):
-    # article_id로 게시글 가져오기
-    # post = Article.objects.get(article_id=article_id)
-    post = get_object_or_404(Article, article_id=article_id)
+# def post_detail(request, article_id):
+#     # article_id로 게시글 가져오기
+#     # post = Article.objects.get(article_id=article_id)
+#     post = get_object_or_404(Article, article_id=article_id)
 
-    # 조회수 증가 및 db에 저장
-    post.views += 1 
-    post.save()
+#     # 조회수 증가 및 db에 저장
+#     post.views += 1 
+#     post.save()
 
-    # 이전/다음 게시물 가져옴
-    prev_post = Article.objects.filter(article_id__lt=post.article_id, publish='Y').order_by('-article_id').first()
-    next_post = Article.objects.filter(article_id__gt=post.article_id, publish='Y').order_by('article_id').first()
+#     # 이전/다음 게시물 가져옴
+#     prev_post = Article.objects.filter(article_id__lt=post.article_id, publish='Y').order_by('-article_id').first()
+#     next_post = Article.objects.filter(article_id__gt=post.article_id, publish='Y').order_by('article_id').first()
 
-    # 같은 주제인 게시물들 중 최신 글 가져옴
-    recommended_posts = Article.objects.filter(topic=post.topic, publish='Y').exclude(article_id=post.article_id).order_by('-updated_date')[:2]
+#     # 같은 주제인 게시물들 중 최신 글 가져옴
+#     recommended_posts = Article.objects.filter(topic=post.topic, publish='Y').exclude(article_id=post.article_id).order_by('-updated_date')[:2]
 
-    # 게시물 내용에서 첫번째 이미지(썸네일) 태그 추출
-    for recommended_post in recommended_posts:
-        soup = BeautifulSoup(recommended_post.content, 'html.parser')
-        image_tag = soup.find('img')
-        recommended_post.image_tag = str(image_tag) if image_tag else ''
+#     # 게시물 내용에서 첫번째 이미지(썸네일) 태그 추출
+#     for recommended_post in recommended_posts:
+#         soup = BeautifulSoup(recommended_post.content, 'html.parser')
+#         image_tag = soup.find('img')
+#         recommended_post.image_tag = str(image_tag) if image_tag else ''
     
-    context = {
-        'post': post,
-        'prev_post': prev_post,
-        'next_post': next_post,
-        'recommended_posts': recommended_posts,
-        'MEDIA_URL': settings.MEDIA_URL,
-    }
+#     context = {
+#         'post': post,
+#         'prev_post': prev_post,
+#         'next_post': next_post,
+#         'recommended_posts': recommended_posts,
+#         'MEDIA_URL': settings.MEDIA_URL,
+#     }
 
-    return render(request, 'post.html', context)
+#     return render(request, 'post.html', context)
 
 
 
@@ -149,41 +150,49 @@ def article_list(request, topic=None):
 
 
 
-# 포스트 업로드, 업데이트, 삭제
-# def create_or_update_post(request, post_id=None):
-#     # 글 수정
-#     if post_id:
-#         post = get_object_or_404(Article, id=post_id)
+def create_or_update_post(request, post_id=None):
+    # 글수정 페이지의 경우
+    if post_id:
+        post = get_object_or_404(Article, id=post_id)
+    
+    # 글쓰기 페이지의 경우, 임시저장한 글이 있는지 검색 
+    else:
+        post = Article.objects.filter(article_id=request.user.id, publish='N').order_by('-updated_date').first()
 
-#     # 글 작성
-#     else:
-#         post = Article.objects.filter(article_id=request.user.username, publish='N').order_by('-posted_date').first()
+    # 업로드/수정 버튼 눌렀을 떄
+    if request.method == 'POST':
+        form = BlogPostForm(request.POST, instance=post) # 폼 초기화
+        if form.is_valid():
+            post = form.save(commit=False)
 
-#     if request.method == 'POST':
-#         form = BlogPostForm(request.POST, instance=post) # 폼 초기화
+            # 게시물 삭제
+            if 'delete-button' in request.POST:
+                post.delete() 
+                return redirect('board') 
 
-#         # 삭제
-#         if 'delete-btn' in request.POST:
-#             post.delete()
-#             return redirect('post')
+            if not form.cleaned_data.get('topic'):
+                post.topic = '전체'
+            
+            # 임시저장 여부 설정
+            if 'temp-save-button' in request.POST:
+                post.publish = 'N'
+            else:
+                post.publish = 'Y'
 
-#         if not form.cleaned_data.get('topic'):
-#             post.topic = '전체'
+            # 글쓴이 설정
+            post.author_id = request.user.username
 
-#         # 임시저장
-#         if '' in request.POST:
-#             post.publish = 'N'
-#         else:
-#             post.publish = 'Y'
+            post.save()
+            return redirect('post.html', post_id=post.id) # 업로드/수정한 페이지로 리다이렉트
+    
+    # 수정할 게시물 정보를 가지고 있는 객체를 사용해 폼을 초기화함
+    else:
+        form = BlogPostForm(instance=post)
 
-#         # 작성자
-#         post.article_id = request.user.username
+    template = 'write.html'
+    context = {'form': form, 'post': post, 'edit_mode': post_id is not None, 'MEDIA_URL': settings.MEDIA_URL,} #edit_mode: 글 수정 모드여부
 
-#         post.save()
-#         return redirect('post', post_id=post.id)
-
-#     else:
-#         form = BlogPostForm(instance=post)
+    return render(request, template, context)
 
 
 
@@ -205,7 +214,7 @@ def write(request):
 def my_decorator(function):
     def decorator_func(request):
         if not request.user.is_anonymous:
-            return redirect("posting")
+            return redirect("board")
         return function(request)
 
     return decorator_func
@@ -216,14 +225,14 @@ def posting(request):
 # 로그아웃 (화면없이 기능 동작 후, 리다이렉트)
 def logout_view(request):
     logout(request)
-    return redirect("board")
+    return redirect("login")
 
 
 @method_decorator(my_decorator, name="get")
 class SignUpView(FormView):
     template_name = "sign_up.html"
     form_class = SignUpForm
-    success_url = "/blog/post/"
+    success_url = "/blog/board/"
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
