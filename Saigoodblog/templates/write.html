@@ -1,12 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>write</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/write.css' %}">
 </head>
+
 <body>
     {% comment %} Header 부분 {% endcomment %}
     <header class="nav">
@@ -32,43 +34,58 @@
 
     {% comment %} Main 부분 {% endcomment %}
     <main>
-        <div class="write_field">
-            <input type="text" class="title" placeholder="제목">
-            <textarea class="content" cols="30" rows="10" placeholder="텍스트에디터로 변경 필요 \ CKeditor, tinymce, summernote 등"></textarea>
-        </div>
-        <aside class="write_option">
-            <div class="auto_ai">
-                <img src="{% static 'img/robot-outline.svg' %}">
-                <button>AI 글 자동완성</button>
+        <form method="POST" id="article_form" action="{% if edit_mode %}{% url 'create_or_update_post' post.id %}{% else %}{% url 'create_or_update_post' %}{% endif %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.media }}
+            <div class="write_field">
+                <input type="text" name="title" class="title" placeholder="제목">
+                <textarea name="content" id="ckeditor"></textarea>
             </div>
-            <div class="topic">
-                <p>TOPIC</p>
-                <div>
-                    <input type="radio" name="topic" value="0" id="topic1"><label for="topic1">일상</label>
+            <aside class="write_option">
+                <div class="auto_ai">
+                    <img src="{% static 'img/robot-outline.svg' %}">
+                    <button>AI 글 자동완성</button>
                 </div>
-                <div>
-                    <input type="radio" name="topic" value="1" id="topic2"><label for="topic1">요리</label>
+                <div class="topic">
+                    <p>TOPIC</p>
+                    <div>
+                        <input type="radio" name="topic" value="0" id="topic1"><label for="topic1">일상</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="topic" value="1" id="topic2"><label for="topic1">요리</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="topic" value="2" id="topic3"><label for="topic1">여행</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="topic" value="3" id="topic4"><label for="topic1">영화</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="topic" value="4" id="topic5"><label for="topic1">IT / 전자기기</label>
+                    </div>
                 </div>
-                <div>
-                    <input type="radio" name="topic" value="2" id="topic3"><label for="topic1">여행</label>
+                <div class="upload_info">
+                    <p>UPLOAD INFO</p>
+                    <div class="info">
+                        <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
+                        <input type="file" name="file" id="imageUpload" style="display:none;">
+                        <button type="button" class="button-line"
+                            onclick="document.getElementById('imageUpload').click();">이미지
+                            업로드</button>
+                    </div>
+                    <div class="save-box">
+                        {% if edit_mode %}
+                        <input type="submit" name="delete-button" class="delete-button" value="삭제" />
+                        <input type="submit" class="save-button" value="수정" />
+
+                        {% else %}
+                        <input type="submit" name="temp-save-button" class="temp-save-button" value="임시저장" />
+                        <input type="submit" name="save-button" class="save-button" value="글 작성" />
+                        {% endif %}
+                    </div>
                 </div>
-                <div>
-                    <input type="radio" name="topic" value="3" id="topic4"><label for="topic1">영화</label>
-                </div>
-                <div>
-                    <input type="radio" name="topic" value="4" id="topic5"><label for="topic1">IT / 전자기기</label>
-                </div>
-            </div>
-            <div class="upload_info">
-                <p>UPLOAD INFO</p>
-                <p id="upload_state">상태 : 미게시</p>
-                <a href="">이미지 업로드</a>
-                <div>
-                    <a href="">임시저장</a>
-                    <a href="">글 작성</a>
-                </div>
-            </div>
-        </aside>
+            </aside>
+        </form>
     </main>
 
     {% comment %} Footer 부분 {% endcomment %}
@@ -79,5 +96,22 @@
             </p>
         </div>
     </footer>
+
+    <script>
+        function initCKEditor() {
+            CKEDITOR.replace('ckeditor', {
+                'toolbar': [
+                    ['Format', 'Bold', 'Italic', 'Underline', 'Link', 'NumberedList', 'BulletedList']
+                ],
+                'height' : '400px',
+                'resize_enabled' : false,
+                'name' : 'content',
+                'autoParagraph': false,
+            });
+        }
+        // 페이지 로드 시 CKEditor 초기화 함수를 호출합니다.
+        window.onload = initCKEditor;
+    </script>
 </body>
+
 </html>
