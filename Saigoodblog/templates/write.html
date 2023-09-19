@@ -36,7 +36,7 @@
 
     {% comment %} Main 부분 {% endcomment %}
     <main>
-        <form method="POST" id="article_form" action="{% if edit_mode %}{% url 'create_or_update_post' post.id %}{% else %}{% url 'create_or_update_post' %}{% endif %}" enctype="multipart/form-data">
+        <form method="POST" id="article_form" action="{% if edit_mode %}{% url 'create_or_update_post' article.article_id %}{% else %}{% url 'create_or_update_post' %}{% endif %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.media }}
             <div class="write_field">
