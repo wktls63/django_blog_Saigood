@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import check_password
 class BlogPostForm(forms.ModelForm):
     class Meta:
         model = Article
-        exclude = ['posted_date']
+        exclude = ['posted_date', 'user']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -64,14 +64,3 @@ class LoginForm(forms.Form):
             raise ValidationError({"password": "잘못된 비밀번호입니다. 다시 확인하세요."})
 
         return cleaned_data
-    
-class BlogPostForm(forms.ModelForm):
-    class Meta:
-        model = Article
-        exclude = ['posted_date']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['topic'].required = False
-        self.fields['publish'].required = False
-        self.fields['views'].required = False
