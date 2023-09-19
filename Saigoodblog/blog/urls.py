@@ -15,9 +15,9 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", logout_view, name="logout"),
 
-    path('', article_list, name='board'),
+    path('board/', article_list, name='board'),
     path('board/<str:topic>', article_list, name='board_by_topic'),
     path("post/<int:article_id>", post_detail, name="posting"),
     path('write/', create_or_update_post, name='create_or_update_post'),
-    path('edit_post/<int:post_id>/', create_or_update_post, name='create_or_update_post'),
+    path('edit_post/<int:article_id>/', create_or_update_post, name='create_or_update_post'),
 ]
