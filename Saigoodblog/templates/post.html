@@ -1,12 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
 </head>
+
 <body>
     {% comment %} Header 부분 {% endcomment %}
     <header class="nav">
@@ -48,41 +50,29 @@
                     {{ post.content }}
                 </p>
                 {% if post.image %}
-                    <img class="image" src="{{ post.image.url }}"></img>
+                <img class="image" src="{{ post.image.url }}"></img>
                 {% endif %}
-                
+
             </div>
         </article>
 
         {% comment %} Main > Aside 부분 {% endcomment %}
         <aside>
             <p>Other posts<br>you may like</p>
+            {% if recommended_posts %}
+
+
             {% for recommended_post in recommended_posts %}
-              <div class="recommend-box">
-                <a href="{% url 'posting' recommended_post.article_id %}">
-                  {{ recommended_post.image_tag|safe }}
-                  {{ recommended_post.title }}</a>
-                
-              </div>
-            {% endfor %}
-            {% comment %} {% for i in "x"|rjust:"2" %}
-             <div>
-                <img src="{% static 'img/aside_sample.png' %}">
-                <h3> Lorem ipsum dolor </h3>
+            <div class="recommend-box">
+                {% if recommended_post.image %}
+                <img src="{{ recommended_post.image.url }}"></img>
+                {% endif %}
+                <h3>{{ recommended_post.title }}</h3>
+                <a href="{% url 'posting' recommended_post.article_id %}"></a>
             </div>
-            {% endfor %} {% endcomment %}
-        </aside>
-        
-        <!-- 아래로 대체되어야 합니다.
-            <aside>
-            <p>Other posts you may like</p>
-            {% for post in recommend_posts %}
-                <div>
-                    <image> {{ post.image.url }}</image>
-                    <h3> {{ post.title }}</h3>
-                </div>
             {% endfor %}
-        </aside> -->
+            {% endif %}
+        </aside>
     </main>
 
     {% comment %} 수정하기, 삭제하기, 다음글, 이전글 부분 {% endcomment %}
@@ -109,7 +99,7 @@
                 <p>{{ next_post.posted_date }}</p>
             </div>
             {% endif %}
-        
+
             {% if prev_post %}
             <div id="prev_post">
                 <p>이전글</p>
@@ -130,4 +120,5 @@
     </footer>
 </body>
 <script src="{% static 'js/share.js' %}"></script>
+
 </html>

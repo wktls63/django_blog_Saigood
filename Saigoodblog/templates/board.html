@@ -52,7 +52,7 @@
 
         {% comment %} 전체 포스트 {% endcomment %}
         <div class="post">
-            {% for post in posts %}
+            {% for post in posts|slice:":6" %}
             <a href="{% url 'posting' post.article_id %}">
                 <div class="all_post">
                     {% if post.image %}
