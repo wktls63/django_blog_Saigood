@@ -93,8 +93,17 @@
     {% comment %} 수정하기, 삭제하기, 다음글, 이전글 부분 {% endcomment %}
     <div id="article_tools">
         <div>
-            <a id="edit_btn" href="">수정하기</a>
-            <a id="delete_btn" href="">삭제하기</a>
+            <!-- 수정하기 -->
+            <a href="{% url 'create_or_update_post' post.id %}">
+                <button class="edit-button">수정하기</button>
+            </a>
+            <!-- 삭제하기 -->
+            <form method="POST" action="{% url 'post' post.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="delete-button" value="true">
+                <button type="submit" class="delete-button">삭제하기</button>
+            </form>
+            <!-- 공유하기 -->
             <a id="share_btn" href="">공유하기</a>
         </div>
         <div>
