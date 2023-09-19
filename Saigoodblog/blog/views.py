@@ -13,6 +13,7 @@ from django.conf import settings
 
 from bs4 import BeautifulSoup
 from django.conf import settings
+from django.contrib import messages
 
 # 글 생성
 def modelForm(request):
@@ -30,6 +31,12 @@ def post_detail(request, article_id):
     # article_id로 게시글 가져오기
     # post = Article.objects.get(article_id=article_id)
     post = get_object_or_404(Article, article_id=article_id)
+
+    if request.method == 'POST':
+        # 요청에 삭제가 포함된 경우
+        if 'delete-button' in request.POST:
+            post.delete()
+            return redirect('board')
 
     # 조회수 증가 및 db에 저장
     post.views += 1 
@@ -59,78 +66,6 @@ def post_detail(request, article_id):
     return render(request, 'post.html', context)
 
 
-# 포스트 업로드, 업데이트, 삭제
-# def create_or_update_post(request, post_id=None):
-#     # 글 수정
-#     if post_id:
-#         post = get_object_or_404(Article, id=post_id)
-    
-#     # 글 작성
-#     else:
-#         post = Article.objects.filter(article_id=request.user.username, publish='N').order_by('-posted_date').first()
-    
-#     if request.method == 'POST':
-#         form = BlogPostForm(request.POST, instance=post) # 폼 초기화
-
-#         # 삭제
-#         if 'delete-btn' in request.POST:
-#             post.delete()
-#             return redirect('post')
-        
-#         if not form.cleaned_data.get('topic'):
-#             post.topic = '전체'
-        
-#         # 임시저장
-#         if '' in request.POST:
-#             post.publish = 'N'
-#         else:
-#             post.publish = 'Y'
-    
-#         # 작성자
-#         post.article_id = request.user.username
-
-#         post.save()
-#         return redirect('post', post_id=post.id)
-
-#     else:
-#         form = BlogPostForm(instance=post)
-
-
-
-
-# def post_detail(request, article_id):
-#     # article_id로 게시글 가져오기
-#     # post = Article.objects.get(article_id=article_id)
-#     post = get_object_or_404(Article, article_id=article_id)
-
-#     # 조회수 증가 및 db에 저장
-#     post.views += 1 
-#     post.save()
-
-#     # 이전/다음 게시물 가져옴
-#     prev_post = Article.objects.filter(article_id__lt=post.article_id, publish='Y').order_by('-article_id').first()
-#     next_post = Article.objects.filter(article_id__gt=post.article_id, publish='Y').order_by('article_id').first()
-
-#     # 같은 주제인 게시물들 중 최신 글 가져옴
-#     recommended_posts = Article.objects.filter(topic=post.topic, publish='Y').exclude(article_id=post.article_id).order_by('-updated_date')[:2]
-
-#     # 게시물 내용에서 첫번째 이미지(썸네일) 태그 추출
-#     for recommended_post in recommended_posts:
-#         soup = BeautifulSoup(recommended_post.content, 'html.parser')
-#         image_tag = soup.find('img')
-#         recommended_post.image_tag = str(image_tag) if image_tag else ''
-    
-#     context = {
-#         'post': post,
-#         'prev_post': prev_post,
-#         'next_post': next_post,
-#         'recommended_posts': recommended_posts,
-#         'MEDIA_URL': settings.MEDIA_URL,
-#     }
-
-#     return render(request, 'post.html', context)
-
-
 
 # 글 목록 띄우기
 def article_list(request, topic=None):
@@ -153,7 +88,7 @@ def article_list(request, topic=None):
 def create_or_update_post(request, article_id=None):
     # 글수정 페이지의 경우
     if article_id:
-        article = get_object_or_404(Article, id=article_id)
+        article = get_object_or_404(Article, article_id=article_id)
     
     # 글쓰기 페이지의 경우, 임시저장한 글이 있는지 검색 
     else:
@@ -165,12 +100,13 @@ def create_or_update_post(request, article_id=None):
         
         if form.is_valid():
             article = form.save(commit=False)
-            article.user = request.user
-            article.save()
+            # article.user = request.user
+            # article.save()
 
             # 게시물 삭제
             if 'delete-button' in request.POST:
-                article.delete() 
+                article.delete()
+                messages.success(request, '게시글이 삭제되었습니다.') 
                 return redirect('board') 
 
             # 주제 선택하지 않으면 '일상'으로 자동 선택
@@ -187,7 +123,7 @@ def create_or_update_post(request, article_id=None):
             article.user_id = request.user.id
 
             article.save()
-            return redirect('post', article_id=article.article_id) # 업로드/수정한 페이지로 리다이렉트
+            return redirect('posting', article_id=article.article_id) # 업로드/수정한 페이지로 리다이렉트
     
     # 수정할 게시물 정보를 가지고 있는 객체를 사용해 폼을 초기화함
     else:
