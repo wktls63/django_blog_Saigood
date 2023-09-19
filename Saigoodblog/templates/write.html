@@ -14,7 +14,9 @@
     <header class="nav">
         <div class="container">
             <div class="top_left">
-                <img src="{% static 'img/blogicon_black.svg' %}" alt="blogicon">
+                <a href="{% url 'board' %}">
+                    <img src="{% static 'img/blogicon_black.svg' %}" alt="blogicon">
+                </a>
             </div>
             <div class="top_right">
                 <div class="nav_filter_buttons">
@@ -26,7 +28,7 @@
                 </div>
                 <div class="nav_item_buttons">
                     <a href="{% url 'board' %}" class="logout">Logout</a>
-                    <a href="{% url 'write' %}" class="write">Just Write!</a>
+                    <a href="{% url 'create_or_update_post' %}" class="write">Just Write!</a>
                 </div>
             </div>
         </div>

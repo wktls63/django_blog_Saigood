@@ -12,7 +12,9 @@
     <header class="nav">
         <div class="container">
             <div class="top_left">
-                <img src="{% static 'img/blogicon_black.svg' %}" alt="blogicon">
+                <a href="{% url 'board' %}">
+                    <img src="{% static 'img/blogicon_black.svg' %}" alt="blogicon">
+                </a>
             </div>
             <div class="top_right">
                 <div class="nav_filter_buttons">
@@ -24,7 +26,7 @@
                 </div>
                 <div class="nav_item_buttons">
                     <a href="{% url 'board' %}" class="logout">Logout</a>
-                    <a href="{% url 'write' %}" class="write">Just Write!</a>
+                    <a href="{% url 'create_or_update_post' %}" class="write">Just Write!</a>
                 </div>
             </div>
         </div>
@@ -69,14 +71,21 @@
         {% comment %} Main > Aside 부분 {% endcomment %}
         <aside>
             <p>Other posts<br>you may like</p>
-            {% for i in "x"|rjust:"2" %}
-            <div>
+            {% for recommended_post in recommended_posts %}
+              <div class="recommend-box">
+                <a href="{% url 'posting' recommended_post.article_id %}">
+                  {{ recommended_post.image_tag|safe }}
+                  {{ recommended_post.title }}</a>
+                
+              </div>
+            {% endfor %}
+            {% comment %} {% for i in "x"|rjust:"2" %}
+             <div>
                 <img src="{% static 'img/aside_sample.png' %}">
                 <h3> Lorem ipsum dolor </h3>
             </div>
-            {% endfor %}
+            {% endfor %} {% endcomment %}
         </aside>
-        
         
         <!-- 아래로 대체되어야 합니다.
             <aside>
@@ -109,12 +118,12 @@
         <div>
             <div id="next_post">
                 <p>다음글</p>
-                <p> <a href="{% url 'post' next_post.article_id %}">{{ next_post.title }}</a></p>
+                <p> <a href="{% url 'posting' next_post.article_id %}">{{ next_post.title }}</a></p>
                 <p>{{ next_post.posted_date }}</p>
             </div>
             <div id="prev_post">
                 <p>이전글</p>
-                <p> <a href="{% url 'post' prev_post.article_id %}">{{ prev_post.title }}</a></p>
+                <p> <a href="{% url 'posting' prev_post.article_id %}">{{ prev_post.title }}</a></p>
                 <p>{{ prev_post.posted_date }}</p>
             </div>
         </div>
