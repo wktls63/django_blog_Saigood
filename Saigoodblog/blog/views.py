@@ -150,47 +150,51 @@ def article_list(request, topic=None):
 
 
 
-def create_or_update_post(request, post_id=None):
+def create_or_update_post(request, article_id=None):
     # 글수정 페이지의 경우
-    if post_id:
-        post = get_object_or_404(Article, id=post_id)
+    if article_id:
+        article = get_object_or_404(Article, id=article_id)
     
     # 글쓰기 페이지의 경우, 임시저장한 글이 있는지 검색 
     else:
-        post = Article.objects.filter(article_id=request.user.id, publish='N').order_by('-updated_date').first()
+        article = Article.objects.filter(user_id=request.user.id, publish='N').order_by('-updated_date').first()
 
     # 업로드/수정 버튼 눌렀을 떄
     if request.method == 'POST':
-        form = BlogPostForm(request.POST, instance=post) # 폼 초기화
+        form = BlogPostForm(request.POST, instance=article) # 폼 초기화
+        
         if form.is_valid():
-            post = form.save(commit=False)
+            article = form.save(commit=False)
+            article.user = request.user
+            article.save()
 
             # 게시물 삭제
             if 'delete-button' in request.POST:
-                post.delete() 
+                article.delete() 
                 return redirect('board') 
 
+            # 주제 선택하지 않으면 '일상'으로 자동 선택
             if not form.cleaned_data.get('topic'):
-                post.topic = '전체'
+                article.topic = '0'
             
             # 임시저장 여부 설정
             if 'temp-save-button' in request.POST:
-                post.publish = 'N'
+                article.publish = 'N'
             else:
-                post.publish = 'Y'
+                article.publish = 'Y'
 
             # 글쓴이 설정
-            post.author_id = request.user.username
+            article.user_id = request.user.id
 
-            post.save()
-            return redirect('post.html', post_id=post.id) # 업로드/수정한 페이지로 리다이렉트
+            article.save()
+            return redirect('post', article_id=article.article_id) # 업로드/수정한 페이지로 리다이렉트
     
     # 수정할 게시물 정보를 가지고 있는 객체를 사용해 폼을 초기화함
     else:
-        form = BlogPostForm(instance=post)
+        form = BlogPostForm(instance=article)
 
     template = 'write.html'
-    context = {'form': form, 'post': post, 'edit_mode': post_id is not None, 'MEDIA_URL': settings.MEDIA_URL,} #edit_mode: 글 수정 모드여부
+    context = {'form': form, 'article': article, 'edit_mode': article is not None, 'MEDIA_URL': settings.MEDIA_URL,} #edit_mode: 글 수정 모드여부
 
     return render(request, template, context)
 
