@@ -103,11 +103,11 @@
     <div id="article_tools">
         <div>
             <!-- 수정하기 -->
-            <a href="{% url 'create_or_update_post' post.id %}">
+            <a href="{% url 'create_or_update_post' post.article_id %}">
                 <button class="edit-button">수정하기</button>
             </a>
             <!-- 삭제하기 -->
-            <form method="POST" action="{% url 'post' post.id %}">
+            <form method="POST" action="{% url 'posting' post.article_id %}">
                 {% csrf_token %}
                 <input type="hidden" name="delete-button" value="true">
                 <button type="submit" class="delete-button">삭제하기</button>
@@ -116,16 +116,21 @@
             <a id="share_btn" href="">공유하기</a>
         </div>
         <div>
+            {% if next_post %}
             <div id="next_post">
                 <p>다음글</p>
-                <p> <a href="{% url 'posting' next_post.article_id %}">{{ next_post.title }}</a></p>
+                <p><a href="{% url 'posting' next_post.article_id %}">{{ next_post.title }}</a></p>
                 <p>{{ next_post.posted_date }}</p>
             </div>
+            {% endif %}
+        
+            {% if prev_post %}
             <div id="prev_post">
                 <p>이전글</p>
-                <p> <a href="{% url 'posting' prev_post.article_id %}">{{ prev_post.title }}</a></p>
+                <p><a href="{% url 'posting' prev_post.article_id %}">{{ prev_post.title }}</a></p>
                 <p>{{ prev_post.posted_date }}</p>
             </div>
+            {% endif %}
         </div>
     </div>
 

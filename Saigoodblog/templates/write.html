@@ -7,6 +7,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>write</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/write.css' %}">
+    <!-- 글 자동완성 ai -->
+    <script>
+        function handleButtonClick(params) {
+            document.getElementById('aiAutocompleteButton').addEventListener('click', function () {
+                // 로딩 애니메이션 
+                document.getElementById('loading-animation').style.display = 'block';
+                document.getElementById('ai-img').style.display = 'none';
+
+                let title = document.getElementById('title').value;
+
+                // 자동완성 글 불러오기 시작
+                fetch('../autocomplete/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: new URLSearchParams({
+                        'title': title
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // 자동완성 글 불러오기 끝
+                        document.getElementById('loading-animation').style.display = 'none';
+                        document.getElementById('ai-img').style.display = 'block';
+
+                        // 기존 내용에 자동완성 된 내용 더함
+                        let editor = CKEDITOR.instances.ckeditor;
+                        let currentContent = editor.getData();
+                        data.message = data.message.replace(/\n/g, '<br>');
+                        editor.setData(currentContent + data.message);
+                    })
+                    // 오류 발생 시 콘솔에 로그 출력 및 로딩 애니메이션 숨김
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('loading-animation').style.display = 'none';
+                    });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            handleButtonClick();
+        });
+    </script>
 </head>
 
 <body>
@@ -36,18 +81,21 @@
 
     {% comment %} Main 부분 {% endcomment %}
     <main>
-        <form method="POST" id="article_form" action="{% if edit_mode %}{% url 'create_or_update_post' post.id %}{% else %}{% url 'create_or_update_post' %}{% endif %}" enctype="multipart/form-data">
+        <form method="POST" id="article_form"
+            action="{% if edit_mode %}{% url 'create_or_update_post' post.article_id %}{% else %}{% url 'create_or_update_post' %}{% endif %}"
+            enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.media }}
             <div class="write_field">
-                <input type="text" name="title" class="title" placeholder="제목">
+                <input type="text" name="title" id='title' class="title" placeholder="제목">
                 <textarea name="content" id="ckeditor"></textarea>
             </div>
             <aside class="write_option">
-                <div class="auto_ai">
-                    <img src="{% static 'img/robot-outline.svg' %}">
-                    <button>AI 글 자동완성</button>
-                </div>
+                <button type="button" onclick="handleButtonClick()" class="auto_ai" id="aiAutocompleteButton">
+                    <img src="{% static 'img/loading.gif' %}" id="loading-animation" style="display: none;">
+                    <img src="{% static 'img/robot-outline.svg' %}" id="ai-img">
+                    <p>AI 글 자동완성</p>
+                </button>
                 <div class="topic">
                     <p>TOPIC</p>
                     <div>
@@ -99,15 +147,16 @@
         </div>
     </footer>
 
+    <!-- ckeditor -->
     <script>
         function initCKEditor() {
             CKEDITOR.replace('ckeditor', {
                 'toolbar': [
                     ['Format', 'Bold', 'Italic', 'Underline', 'Link', 'NumberedList', 'BulletedList']
                 ],
-                'height' : '400px',
-                'resize_enabled' : false,
-                'name' : 'content',
+                'height': '400px',
+                'resize_enabled': false,
+                'name': 'content',
                 'autoParagraph': false,
             });
         }
