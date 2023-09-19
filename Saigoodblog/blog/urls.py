@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ArticleViewSet
-from .views import board, write, article_list, post_detail, create_or_update_post, autocomplete
+from .views import board, write, article_list, post_detail, create_or_update_post, autocomplete, generate_image
 
 from .views import SignUpView, posting, logout_view, LoginView
 
@@ -20,5 +20,6 @@ urlpatterns = [
     path("post/<int:article_id>", post_detail, name="posting"),
     path('write/', create_or_update_post, name='create_or_update_post'),
     path('edit_post/<int:article_id>/', create_or_update_post, name='create_or_update_post'),
-    path('autocomplete/', autocomplete, name='autocomplete')
+    path('autocomplete/', autocomplete, name='autocomplete'),
+    path('generate_image/', generate_image, name='generate_image')
 ]

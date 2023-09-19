@@ -7,51 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>write</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/write.css' %}">
-    <!-- 글 자동완성 ai -->
-    <script>
-        function handleButtonClick(params) {
-            document.getElementById('aiAutocompleteButton').addEventListener('click', function () {
-                // 로딩 애니메이션 
-                document.getElementById('loading-animation').style.display = 'block';
-                document.getElementById('ai-img').style.display = 'none';
-
-                let title = document.getElementById('title').value;
-
-                // 자동완성 글 불러오기 시작
-                fetch('../autocomplete/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': '{{ csrf_token }}',
-                    },
-                    body: new URLSearchParams({
-                        'title': title
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // 자동완성 글 불러오기 끝
-                        document.getElementById('loading-animation').style.display = 'none';
-                        document.getElementById('ai-img').style.display = 'block';
-
-                        // 기존 내용에 자동완성 된 내용 더함
-                        let editor = CKEDITOR.instances.ckeditor;
-                        let currentContent = editor.getData();
-                        data.message = data.message.replace(/\n/g, '<br>');
-                        editor.setData(currentContent + data.message);
-                    })
-                    // 오류 발생 시 콘솔에 로그 출력 및 로딩 애니메이션 숨김
-                    .catch(error => {
-                        console.error('Error:', error);
-                        document.getElementById('loading-animation').style.display = 'none';
-                    });
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', (event) => {
-            handleButtonClick();
-        });
-    </script>
 </head>
 
 <body>
@@ -90,9 +45,15 @@
             </div>
             <aside class="write_option">
                 <button type="button" onclick="handleButtonClick()" class="auto_ai" id="aiAutocompleteButton">
-                    <img src="{% static 'img/loading.gif' %}" id="loading-animation" style="display: none;">
-                    <img src="{% static 'img/robot-outline.svg' %}" id="ai-img">
+                    <img src="{% static 'img/loading.gif' %}" class="loading-animation" style="display: none;">
+                    <img src="{% static 'img/robot-outline.svg' %}" class="ai-img">
                     <p>AI 글 자동완성</p>
+                </button>
+                <button type="button" onclick="handleButtonClick2()" class="auto_ai" id="aiImageGenerateButton">
+                    <img src="{% static 'img/loading.gif' %}" class="loading-animation" style="display: none;">
+                    <img src="{% static 'img/robot-outline.svg' %}" class="ai-img">
+                    <p>AI 이미지 자동 생성</p>
+                    <img id="aiImagePreview" src="" alt="AI generated image" style="display: none; max-width: 100%;">
                 </button>
                 <div class="topic">
                     <p>TOPIC</p>
@@ -115,11 +76,13 @@
                 <div class="upload_info">
                     <p>UPLOAD INFO</p>
                     <div class="info">
-                        <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
-                        <input type="file" name="file" id="imageUpload" style="display:none;">
-                        <button type="button" class="button-line"
-                            onclick="document.getElementById('imageUpload').click();">이미지
-                            업로드</button>
+                        <div class="info">
+                            <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
+                            <!-- Hidden input for storing DALL-E generated image URL -->
+                            <input type="hidden" name="dalle_image_url" id="dalleImageURL" value="">
+                            <input type="file" name="file" id="imageUpload" style="display:none;">
+                            <input type="file" name="image" multiple></input>
+                        </div>
                     </div>
                     <div class="save-box">
                         {% if edit_mode %}
@@ -161,6 +124,101 @@
         // 페이지 로드 시 CKEditor 초기화 함수를 호출합니다.
         window.onload = initCKEditor;
     </script>
+
+    <!-- 글 자동완성 ai -->
+    <script>
+        function handleButtonClick() {
+            document.getElementById('aiAutocompleteButton').addEventListener('click', function () {
+                // 로딩 애니메이션 
+                document.getElementsByClassName('loading-animation')[0].style.display = 'block';
+                document.getElementsByClassName('ai-img')[0].style.display = 'none';
+
+                let title = document.getElementById('title').value;
+
+                // 자동완성 글 불러오기 시작
+                fetch('../autocomplete/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: new URLSearchParams({
+                        'title': title
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // 자동완성 글 불러오기 끝
+                        document.getElementsByClassName('loading-animation')[0].style.display = 'none';
+                        document.getElementsByClassName('ai-img')[0].style.display = 'block';
+
+                        // 기존 내용에 자동완성 된 내용 더함
+                        let editor = CKEDITOR.instances.ckeditor;
+                        let currentContent = editor.getData();
+                        data.message = data.message.replace(/\n/g, '<br>');
+                        editor.setData(currentContent + data.message);
+                    })
+                    // 오류 발생 시 콘솔에 로그 출력 및 로딩 애니메이션 숨김
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementsByClassName('loading-animation')[0].style.display = 'none';
+                    });
+            });
+        }
+        function handleButtonClick2() {
+            document.getElementById('aiImageGenerateButton').addEventListener('click', function () {
+                // 로딩 애니메이션 표시
+                document.getElementsByClassName("loading-animation")[1].style.display = "block";
+                document.getElementsByClassName('ai-img')[1].style.display = 'none';
+
+                // 제목 데이터 가져오기
+                let title = document.getElementById('title').value;
+
+                // 이미지 생성 요청
+                fetch("../generate_image/", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: new URLSearchParams({
+                        'title': title
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === "success") {
+                            // 이미지가 성공적으로 생성되었을 때 버튼 텍스트와 색상 변경
+                            const button = document.getElementById('aiImageGenerateButton');
+                            button.textContent = '이미지 생성 완료!';
+                            button.style.backgroundColor = '#5B075E';
+                            button.style.color = '#ffffff'; // 버튼 텍스트 색상은 흰색으로 설정.
+                            document.getElementsByClassName('ai-img')[1].style.display = 'none';
+                            
+                            // DALL-E로 생성된 이미지 URL을 hidden input 필드에 저장
+                            document.getElementById('dalleImageURL').value = data.image_url;
+
+                            // 로딩 애니메이션 숨기기
+                            document.getElementsByClassName("loading-animation")[1].style.display = "none";
+                            document.getElementsByClassName('ai-img')[1].style.display = 'block';
+                        } else {
+                            alert("Error: " + data.message);
+                            document.getElementsByClassName("loading-animation")[1].style.display = "none";
+                            document.getElementsByClassName('ai-img')[1].style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        document.getElementsByClassName("loading-animation")[1].style.display = "none";
+                    });
+            });
+        }
+        document.addEventListener('DOMContentLoaded', (event) => {
+            handleButtonClick();
+            handleButtonClick2();
+        });
+    </script>
+
 </body>
 
 </html>

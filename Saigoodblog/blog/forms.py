@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import check_password
 class BlogPostForm(forms.ModelForm):
     class Meta:
         model = Article
-        exclude = ['posted_date', 'user']
+        exclude = ['posted_date', 'user', 'image']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

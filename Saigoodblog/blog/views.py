@@ -1,4 +1,6 @@
+from io import BytesIO
 from django.shortcuts import get_object_or_404, render, redirect
+import requests
 from rest_framework import viewsets
 from .models import Article
 from .serializers import ArticleSerializer
@@ -10,6 +12,7 @@ from django.utils.decorators import method_decorator
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.http import JsonResponse
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 # openai
 from pathlib import Path
@@ -103,12 +106,10 @@ def create_or_update_post(request, article_id=None):
 
     # 업로드/수정 버튼 눌렀을 떄
     if request.method == 'POST':
-        form = BlogPostForm(request.POST, instance=article) # 폼 초기화
+        form = BlogPostForm(request.POST, request.FILES, instance=article) # 폼 초기화
         
         if form.is_valid():
             article = form.save(commit=False)
-            # article.user = request.user
-            # article.save()
 
             # 게시물 삭제
             if 'delete-button' in request.POST:
@@ -128,6 +129,19 @@ def create_or_update_post(request, article_id=None):
 
             # 글쓴이 설정
             article.user_id = request.user.id
+            
+            # Check if DALL-E image URL is provided
+            dalle_image_url = request.POST.get('dalle_image_url', None)
+            if dalle_image_url:
+                # DALL-E로 받은 이미지를 IMAGEFILED에 적합한 형태로 바꾸는 과정
+                response = requests.get(dalle_image_url)
+                image_io = BytesIO(response.content)
+                image_file = InMemoryUploadedFile(image_io, None, "generated_image.png", 'image/png', len(response.content), None)
+
+                article.image = image_file
+
+            else:
+                article.image = request.FILES.get('image', None)
 
             article.save()
             return redirect('posting', article_id=article.article_id) # 업로드/수정한 페이지로 리다이렉트
@@ -247,4 +261,31 @@ def autocomplete(request):
         except Exception as e:
             message = str(e)
         return JsonResponse({"message": message})
+    return render(request, 'write.html')
+
+def generate_image(request):
+    # 이미지 생성에 사용할 키
+    OPENAI_SECRETS_DIR = Path(__file__).resolve().parent.parent / '.secrets'
+    secrets = json.load(open(os.path.join(OPENAI_SECRETS_DIR, 'secret.json')))
+    openai.api_key = secrets['DALLE_SECRET_KEY']
+    
+    # post 요청 받으면 제목 필드값 가져옴
+    if request.method == "POST":
+        title = request.POST.get('title')
+        if not title:
+            return JsonResponse({"message": "Title is empty or invalid"})
+
+        try:
+            response = openai.Image.create(
+            prompt= title,
+            n=1,
+            size="256x256"
+            )
+            image_url = response['data'][0]['url']
+            message = "success"
+        
+        except Exception as e:
+            message = str(e)
+        
+        return JsonResponse({"message": message, "image_url":image_url})
     return render(request, 'write.html')
