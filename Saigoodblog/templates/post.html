@@ -103,11 +103,11 @@
     <div id="article_tools">
         <div>
             <!-- 수정하기 -->
-            <a href="{% url 'create_or_update_post' post.id %}">
+            <a href="{% url 'create_or_update_post' post.article_id %}">
                 <button class="edit-button">수정하기</button>
             </a>
             <!-- 삭제하기 -->
-            <form method="POST" action="{% url 'post' post.id %}">
+            <form method="POST" action="{% url 'posting' post.article_id %}">
                 {% csrf_token %}
                 <input type="hidden" name="delete-button" value="true">
                 <button type="submit" class="delete-button">삭제하기</button>
