@@ -9,6 +9,13 @@ from django.views.generic import FormView
 from django.utils.decorators import method_decorator
 from bs4 import BeautifulSoup
 from django.conf import settings
+from django.http import JsonResponse
+
+# openai
+from pathlib import Path
+import os
+import json
+import openai
 
 
 from bs4 import BeautifulSoup
@@ -124,6 +131,7 @@ def create_or_update_post(request, article_id=None):
 
             article.save()
             return redirect('posting', article_id=article.article_id) # 업로드/수정한 페이지로 리다이렉트
+            return redirect('posting', article_id=article.article_id) # 업로드/수정한 페이지로 리다이렉트
     
     # 수정할 게시물 정보를 가지고 있는 객체를 사용해 폼을 초기화함
     else:
@@ -133,7 +141,6 @@ def create_or_update_post(request, article_id=None):
     context = {'form': form, 'article': article, 'edit_mode': article is not None, 'MEDIA_URL': settings.MEDIA_URL,} #edit_mode: 글 수정 모드여부
 
     return render(request, template, context)
-
 
 
 
@@ -217,3 +224,28 @@ class LoginView(FormView):
     
     def form_invalid(self, form):
         return super().form_invalid(form)
+
+# openai 글 자동완성 기능
+OPENAI_SECRETS_DIR = Path(__file__).resolve().parent.parent / '.secrets'
+secrets = json.load(open(os.path.join(OPENAI_SECRETS_DIR, 'secret.json')))
+openai.api_key = secrets['OPENAI_SECRET_KEY']
+
+def autocomplete(request):
+    if request.method == "POST":
+
+        #제목 필드값 가져옴
+        prompt = request.POST.get('title')
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+            )
+            # 반환된 응답에서 텍스트 추출해 변수에 저장
+            message = response['choices'][0]['message']['content']
+        except Exception as e:
+            message = str(e)
+        return JsonResponse({"message": message})
+    return render(request, 'write.html')

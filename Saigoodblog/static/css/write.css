@@ -182,6 +182,10 @@ main {
     cursor: pointer;
 }
 
+#loading-animation{
+    width: 40px;
+}
+
 .topic {
     display: flex;
     flex-direction: column;
