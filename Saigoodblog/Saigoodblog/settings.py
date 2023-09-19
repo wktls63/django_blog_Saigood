@@ -45,18 +45,7 @@ CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 # USER
 AUTH_USER_MODEL = 'blog.User'
 
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink'],
-            ['RemoveFormat', 'Source']
-        ],
-        'height': 300,
-        'width': 1000,
-    },
-}
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
