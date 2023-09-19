@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>board</title>
-    <link rel="stylesheet" type= "text/css" href="{% static 'css/board.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/board.css' %}">
 </head>
 
 <body>
@@ -14,7 +14,9 @@
     <header class="nav">
         <div class="container">
             <div class="top_left">
-                <img src="{% static 'img/blogicon_white.svg' %}" alt="blogicon">
+                <a href="{% url 'board' %}">
+                    <img src="{% static 'img/blogicon_white.svg' %}" alt="blogicon">
+                </a>
             </div>
             <div class="top_right">
                 <div class="nav_filter_buttons">
@@ -26,10 +28,10 @@
                 </div>
                 <div class="nav_item_buttons">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}" class="logout">Logout</a>
-                        <a href="{% url 'write' %}" class="write">Just Write!</a>
+                    <a href="{% url 'logout' %}" class="logout">Logout</a>
+                    <a href="{% url 'create_or_update_post' %}" class="write">Just Write!</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="login">Login</a>
+                    <a href="{% url 'login' %}" class="login">Login</a>
                     {% endif %}
                 </div>
             </div>
@@ -43,16 +45,18 @@
             <div>
                 <h2>{{ top_post.title }}</h2>
                 <p>{{ top_post.content }}</p>
-                <a href="{% url 'board' %}">READ MORE</a>
+                <a href="{% url 'posting' top_post.article_id %}">READ MORE</a>
             </div>
             <img src="{% static 'img/top_post.png' %}">
         </div>
-        
+
         {% comment %} 전체 포스트 {% endcomment %}
         <div class="post">
             {% for post in posts %}
             <div class="all_post">
-                <img class="post_img" src="{% static 'img/article_sample_image.png' %}" alt="postimg">
+                <a href="{% url 'posting' post.article_id %}">
+                    <img class="post_img" src="{% static 'img/article_sample_image.png' %}" alt="postimg">
+                </a>
                 <div class="all_post_body">
                     <h6 class="post_date">{{ post.posted_date }}</h6>
                     <h4 class="post_title">{{ post.title }}</h4>
@@ -67,7 +71,7 @@
     <footer>
         <div class="bottom">
             <p>made with
-            <strong>Saigood</strong>
+                <strong>Saigood</strong>
             </p>
         </div>
     </footer>
