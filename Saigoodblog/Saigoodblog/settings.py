@@ -42,6 +42,9 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
 CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 
+# USER
+AUTH_USER_MODEL = 'blog.User'
+
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': [
