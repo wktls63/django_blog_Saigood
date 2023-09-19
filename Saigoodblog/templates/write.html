@@ -12,7 +12,9 @@
     <header class="nav">
         <div class="container">
             <div class="top_left">
-                <img src="{% static 'img/blogicon_black.svg' %}" alt="blogicon">
+                <a href="{% url 'board' %}">
+                    <img src="{% static 'img/blogicon_black.svg' %}" alt="blogicon">
+                </a>
             </div>
             <div class="top_right">
                 <div class="nav_filter_buttons">
@@ -24,7 +26,7 @@
                 </div>
                 <div class="nav_item_buttons">
                     <a href="{% url 'board' %}" class="logout">Logout</a>
-                    <a href="{% url 'write' %}" class="write">Just Write!</a>
+                    <a href="{% url 'create_or_update_post' %}" class="write">Just Write!</a>
                 </div>
             </div>
         </div>
@@ -63,9 +65,9 @@
                 <p>UPLOAD INFO</p>
                 <p id="upload_state">상태 : 미게시</p>
                 <a href="">이미지 업로드</a>
-                <div>
-                    <a href="">임시저장</a>
-                    <a href="">글 작성</a>
+                <div class="save-box">
+                        <a href="{% url 'board' %}">임시저장</a>
+                        <a href="{{ redirect_url }}">글 작성</a>
                 </div>
             </div>
         </aside>
