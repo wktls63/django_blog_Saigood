@@ -113,13 +113,17 @@ main {
     background-color: #F9F8F4;
     width: 100%;
     height: calc(824px - 104px);
+    
+    position: absolute;
+    top: 104px;
+}
+
+#article_form {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
     gap: 20px;
-    position: absolute;
-    top: 104px;
 }
 
 .write_field {
@@ -140,10 +144,10 @@ main {
     color: #BFBFBF;
 }
 
-.content {
+#cke_ckeditor {
     width: 100%;
     background-color: #FFF;
-    height: 300px;
+    height: 400px;
     padding: 0px;
     border: none;
 }
@@ -215,7 +219,12 @@ main {
     font-weight: 600;
 }
 
-.upload_info > p:nth-child(2) {
+.info {
+    display: flex;
+    flex-direction: column;
+}
+
+.info > p {
     margin: initial;
     margin-bottom: 8px;
 
@@ -223,7 +232,7 @@ main {
     font-weight: 500;
 }
 
-.upload_info > a {
+.info > button {
     margin: initial;
     margin-bottom: 44px;
     
@@ -234,13 +243,19 @@ main {
     width: fit-content;
 }
 
-.upload_info > div {
+/* .upload_info > div {
+    display: flex;
+    flex-direction: row;
+    gap: 13px;
+} */
+
+.save-box {
     display: flex;
     flex-direction: row;
     gap: 13px;
 }
 
-.upload_info > div > a {
+.save-box > input {
     padding: 4px 17px;
     font-size: 14px;
     text-align: center;
@@ -250,16 +265,19 @@ main {
     width:-webkit-fill-available;
 }
 
-.upload_info > div > a:first-child{
+.save-box > input:first-child{
     background: none;
     color: #1E1E1E;
 }
 
-.upload_info > div > a:last-child{
+.save-box > input:last-child{
     background: #1E1E1E;
     color: white;
 }
 
+.save-box > input:hover {
+    cursor: pointer;
+}
 
 /* -----------------------Footer--------------------- */
 /* Footer 스타일 */
