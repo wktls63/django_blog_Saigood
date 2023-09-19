@@ -47,26 +47,12 @@
                 <p class="content">
                     {{ post.content }}
                 </p>
-                <img class="image" src="{% static 'img/post_sample.png' %}">{{ post.image }}</image>
-                {% comment %} <p class="content">Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque.
-                    Euismod consectetur fames
-                    vitae nunc gravida morbi felis porttitor integer. Ridiculus id purus feugiat et mi justo scelerisque euismod
-                    euismod.</p> {% endcomment %}
+                {% if post.image %}
+                    <img class="image" src="{{ post.image.url }}"></img>
+                {% endif %}
+                
             </div>
         </article>
-        
-        <!-- 아래로 대체되어야 합니다.
-        <article>
-            <p class="posted_date">{{ article.posted_date }}</p>
-            <h2 class="title">{{ article.title }}</h2>
-            <p class="author">{{ article.author }}</p>
-            <p class="topic">{{ article.topic }}</p>
-            <div class="article_detail">
-                <p class="content">{{ article.content }}</p>
-                <image class="image">{{ article.imageurl }}</image>
-            </div>
-        </article>
-        -->
 
         {% comment %} Main > Aside 부분 {% endcomment %}
         <aside>

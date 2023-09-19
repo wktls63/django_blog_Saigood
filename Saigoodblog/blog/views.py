@@ -131,7 +131,6 @@ def create_or_update_post(request, article_id=None):
 
             article.save()
             return redirect('posting', article_id=article.article_id) # 업로드/수정한 페이지로 리다이렉트
-            return redirect('posting', article_id=article.article_id) # 업로드/수정한 페이지로 리다이렉트
     
     # 수정할 게시물 정보를 가지고 있는 객체를 사용해 폼을 초기화함
     else:

@@ -53,16 +53,18 @@
         {% comment %} 전체 포스트 {% endcomment %}
         <div class="post">
             {% for post in posts %}
-            <div class="all_post">
-                <a href="{% url 'posting' post.article_id %}">
-                    <img class="post_img" src="{% static 'img/article_sample_image.png' %}" alt="postimg">
-                </a>
-                <div class="all_post_body">
-                    <h6 class="post_date">{{ post.posted_date }}</h6>
-                    <h4 class="post_title">{{ post.title }}</h4>
-                    <p class="post_content">{{ post.content }}</p>
+            <a href="{% url 'posting' post.article_id %}">
+                <div class="all_post">
+                    {% if post.image %}
+                    <img href="{% url 'posting' post.article_id %}" src="{{ post.image.url }}">
+                    {% endif %}
+                    <div class="all_post_body">
+                        <h6 class="post_date">{{ post.posted_date }}</h6>
+                        <h4 class="post_title">{{ post.title }}</h4>
+                        <p class="post_content">{{ post.content }}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
     </main>
