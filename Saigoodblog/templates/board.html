@@ -45,7 +45,7 @@
             <div>
                 {% if top_post %}
                 <h2>{{ top_post.title }}</h2>
-                <p>{{ top_post.content }}</p>
+                <p>{{ top_post.content|linebreaksbr }}</p>
                 <a href="{% url 'posting' top_post.article_id %}">READ MORE</a>
             </div>
             <img src="{{ top_post.image.url }}">
@@ -58,7 +58,7 @@
             <a href="{% url 'posting' post.article_id %}">
                 <div class="all_post">
                     {% if post.image %}
-                    <img href="{% url 'posting' post.article_id %}" src="{{ post.image.url }}">
+                    <img class="post_img" href="{% url 'posting' post.article_id %}" src="{{ post.image.url }}">
                     {% endif %}
                     <div class="all_post_body">
                         <h6 class="post_date">{{ post.posted_date }}</h6>

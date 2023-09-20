@@ -168,7 +168,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    width: 525px;
+    width: 600px;
     height: 343px;
     margin-left: calc(50% - 512px);
     z-index: 1;
@@ -179,6 +179,8 @@ main {
     right: calc(50% - 512px);
     width: 600px;
     height: 343px;
+    object-fit:cover;
+    filter: brightness(50%);
 }
 
 .top_post > div > h2 {
@@ -199,6 +201,12 @@ main {
     font-weight: 400;
     line-height: 25px; /* 192.308% */
     margin-bottom: 16px;
+
+    word-wrap: break;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .top_post > div > a {
@@ -266,6 +274,12 @@ main {
     color: #1E1E1E;
     font-size: 20px;
     font-weight: 700;
+
+    word-wrap: break;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .post_content {

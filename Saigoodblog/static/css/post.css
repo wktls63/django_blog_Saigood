@@ -193,8 +193,8 @@ article {
 }
 
 .image {
-    width: 100%;
-    object-fit: cover;
+    height: 320px;
+    object-fit:contain;
 }
 
 /* ----------- aside 부분 ----------- */

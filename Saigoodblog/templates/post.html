@@ -47,7 +47,7 @@
             </div>
             <div class="article_detail">
                 <p class="content">
-                    {{ post.content }}
+                    {{ post.content|linebreaksbr }}
                 </p>
                 {% if post.image %}
                 <img class="image" src="{{ post.image.url }}"></img>

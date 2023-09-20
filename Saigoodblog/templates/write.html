@@ -119,6 +119,7 @@
                 'resize_enabled': false,
                 'name': 'content',
                 'autoParagraph': true,
+                'enterMode': CKEDITOR.ENTER_BR
             });
         }
         // 페이지 로드 시 CKEditor 초기화 함수를 호출합니다.
@@ -155,8 +156,9 @@
                         // 기존 내용에 자동완성 된 내용 더함
                         let editor = CKEDITOR.instances.ckeditor;
                         let currentContent = editor.getData();
-                        data.message = data.message.replace(/\n/g, '<br>');
-                        data.message = data.message.replace(/<br \/>/g, '');
+                        
+                        // 에디터에 띄우기 전에 \n을 <br/>로 변경
+                        data.message = data.message.replace(/\n/g, '<br/>');
                         
                         editor.setData(currentContent + data.message);
                     })

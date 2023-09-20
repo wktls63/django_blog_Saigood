@@ -48,6 +48,10 @@ def post_detail(request, article_id):
             post.delete()
             return redirect('board')
 
+    # 서버에서 프론트로 데이터를 전달하기 전에 특정 HTML 엔터티들을 해당 문자로 변환합니다.
+    post.content = decode_html_entities(post.content)
+    post.content = post.content.replace('<br />', '')
+
     # 조회수 증가 및 db에 저장
     post.views += 1 
     post.save()
@@ -75,7 +79,19 @@ def post_detail(request, article_id):
 
     return render(request, 'post.html', context)
 
-
+def decode_html_entities(text):
+    # 서버에서 프론트로 데이터를 전송하기 전에 특정한 html 엔터티를 디코드하기 위한 함수입니다.
+    replacements = {
+        '&amp;': '&',
+        '&lt;': '<',
+        '&gt;': '>',
+        '&quot;': '"'
+    }
+    
+    for entity, char in replacements.items():
+        text = text.replace(entity, char)
+    
+    return text
 
 # 글 목록 띄우기
 def article_list(request, topic=None):
@@ -84,15 +100,26 @@ def article_list(request, topic=None):
     if topic:
         posts = Article.objects.filter(topic=topic, publish='Y').order_by('-posted_date')
 
+        # 개행문자 제거
+        for post in posts:
+            post.content = post.content.replace('<br />', '\n')
+
     # 선택된 주제 없을 경우 모든 글목록 보여줌
     else:
         posts = Article.objects.filter(publish='Y').order_by('-posted_date')
 
-    # 조회수가 가장 
+        # 개행문자 제거
+        for post in posts:
+            post.content = post.content.replace('<br />', '\n')
+
+    # 조회수가 가장 높은 포스트
     top_post = posts.first()
 
-    return render(request, 'board.html', {'posts':posts, 'top_post':top_post})
+    # 서버에서 프론트로 데이터를 보내기 전에 특정한 html 엔터티를 디코드합니다.
+    top_post.content = decode_html_entities(top_post.content)
+    top_post.content = top_post.content.replace('<br />', '\n')
 
+    return render(request, 'board.html', {'posts':posts, 'top_post':top_post})
 
 
 def create_or_update_post(request, article_id=None):
@@ -144,6 +171,9 @@ def create_or_update_post(request, article_id=None):
             else:
                 article.image = request.FILES.get('image', None)
 
+            # 서버로 전송하기 전에 <br/>를 공백으로 변경:
+            article.content = article.content.replace('<br />', '')
+
             article.save()
             return redirect('posting', article_id=article.article_id) # 업로드/수정한 페이지로 리다이렉트
     
@@ -155,7 +185,6 @@ def create_or_update_post(request, article_id=None):
     context = {'form': form, 'article': article, 'edit_mode': article is not None, 'MEDIA_URL': settings.MEDIA_URL,} #edit_mode: 글 수정 모드여부
 
     return render(request, template, context)
-
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
@@ -239,12 +268,13 @@ class LoginView(FormView):
     def form_invalid(self, form):
         return super().form_invalid(form)
 
-# openai 글 자동완성 기능
-OPENAI_SECRETS_DIR = Path(__file__).resolve().parent.parent / '.secrets'
-secrets = json.load(open(os.path.join(OPENAI_SECRETS_DIR, 'secret.json')))
-openai.api_key = secrets['OPENAI_SECRET_KEY']
 
 def autocomplete(request):
+    # openai 글 자동완성 기능
+    OPENAI_SECRETS_DIR = Path(__file__).resolve().parent.parent / '.secrets'
+    secrets = json.load(open(os.path.join(OPENAI_SECRETS_DIR, 'secret.json')))
+    openai.api_key = secrets['OPENAI_SECRET_KEY']
+    
     if request.method == "POST":
 
         #제목 필드값 가져옴
