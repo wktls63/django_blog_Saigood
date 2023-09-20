@@ -82,11 +82,11 @@ def article_list(request, topic=None):
     
     # 선택된 주제 있을 경우 필터링
     if topic:
-        posts = Article.objects.filter(topic=topic, publish='Y').order_by('-views')
+        posts = Article.objects.filter(topic=topic, publish='Y').order_by('-posted_date')
 
     # 선택된 주제 없을 경우 모든 글목록 보여줌
     else:
-        posts = Article.objects.filter(publish='Y').order_by('-views')
+        posts = Article.objects.filter(publish='Y').order_by('-posted_date')
 
     # 조회수가 가장 
     top_post = posts.first()
@@ -131,8 +131,9 @@ def create_or_update_post(request, article_id=None):
             article.user_id = request.user.id
             
             # Check if DALL-E image URL is provided
-            dalle_image_url = request.POST.get('dalle_image_url', None)
+            dalle_image_url = request.POST.get('dalle_image_url')
             if dalle_image_url:
+                
                 # DALL-E로 받은 이미지를 IMAGEFILED에 적합한 형태로 바꾸는 과정
                 response = requests.get(dalle_image_url)
                 image_io = BytesIO(response.content)
@@ -279,7 +280,7 @@ def generate_image(request):
             response = openai.Image.create(
             prompt= title,
             n=1,
-            size="256x256"
+            size="512x512"
             )
             image_url = response['data'][0]['url']
             message = "success"

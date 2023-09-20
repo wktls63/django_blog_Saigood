@@ -43,11 +43,13 @@
         {% comment %} 조회수 가장 많은 포스트 {% endcomment %}
         <div class="top_post">
             <div>
+                {% if top_post %}
                 <h2>{{ top_post.title }}</h2>
                 <p>{{ top_post.content }}</p>
                 <a href="{% url 'posting' top_post.article_id %}">READ MORE</a>
             </div>
-            <img src="{% static 'img/top_post.png' %}">
+            <img src="{{ top_post.image.url }}">
+            {% endif %}
         </div>
 
         {% comment %} 전체 포스트 {% endcomment %}

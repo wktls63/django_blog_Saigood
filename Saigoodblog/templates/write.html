@@ -52,8 +52,9 @@
                 <button type="button" onclick="handleButtonClick2()" class="auto_ai" id="aiImageGenerateButton">
                     <img src="{% static 'img/loading.gif' %}" class="loading-animation" style="display: none;">
                     <img src="{% static 'img/robot-outline.svg' %}" class="ai-img">
-                    <p>AI 이미지 자동 생성</p>
-                    <img id="aiImagePreview" src="" alt="AI generated image" style="display: none; max-width: 100%;">
+                    <p>AI 썸네일 자동 생성</p>
+                    <!-- Hidden input for storing DALL-E generated image URL -->
+                    <input type="hidden" name="dalle_image_url" id="dalleImageURL" value="">
                 </button>
                 <div class="topic">
                     <p>TOPIC</p>
@@ -78,8 +79,7 @@
                     <div class="info">
                         <div class="info">
                             <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
-                            <!-- Hidden input for storing DALL-E generated image URL -->
-                            <input type="hidden" name="dalle_image_url" id="dalleImageURL" value="">
+                            
                             <input type="file" name="file" id="imageUpload" style="display:none;">
                             <input type="file" name="image" multiple></input>
                         </div>
@@ -118,7 +118,7 @@
                 'height': '400px',
                 'resize_enabled': false,
                 'name': 'content',
-                'autoParagraph': false,
+                'autoParagraph': true,
             });
         }
         // 페이지 로드 시 CKEditor 초기화 함수를 호출합니다.
@@ -156,6 +156,8 @@
                         let editor = CKEDITOR.instances.ckeditor;
                         let currentContent = editor.getData();
                         data.message = data.message.replace(/\n/g, '<br>');
+                        data.message = data.message.replace(/<br \/>/g, '');
+                        
                         editor.setData(currentContent + data.message);
                     })
                     // 오류 발생 시 콘솔에 로그 출력 및 로딩 애니메이션 숨김
@@ -190,7 +192,7 @@
                         if (data.message === "success") {
                             // 이미지가 성공적으로 생성되었을 때 버튼 텍스트와 색상 변경
                             const button = document.getElementById('aiImageGenerateButton');
-                            button.textContent = '이미지 생성 완료!';
+                            button.getElementsByTagName('p')[0].textContent = '썸네일 생성 완료!';
                             button.style.backgroundColor = '#5B075E';
                             button.style.color = '#ffffff'; // 버튼 텍스트 색상은 흰색으로 설정.
                             document.getElementsByClassName('ai-img')[1].style.display = 'none';
@@ -200,11 +202,9 @@
 
                             // 로딩 애니메이션 숨기기
                             document.getElementsByClassName("loading-animation")[1].style.display = "none";
-                            document.getElementsByClassName('ai-img')[1].style.display = 'block';
                         } else {
                             alert("Error: " + data.message);
                             document.getElementsByClassName("loading-animation")[1].style.display = "none";
-                            document.getElementsByClassName('ai-img')[1].style.display = 'block';
                         }
                     })
                     .catch(error => {
